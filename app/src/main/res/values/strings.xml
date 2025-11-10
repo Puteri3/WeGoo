@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">WeGoo</string>
+    <string name="booking_page_title">📅 Booking Page</string>
+    <string name="log_in">LOG IN</string>
+</resources>

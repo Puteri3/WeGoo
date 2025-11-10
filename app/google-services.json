@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "177207934467",
+    "firebase_url": "https://wegoodatabase-dda6f-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "wegoodatabase-dda6f",
+    "storage_bucket": "wegoodatabase-dda6f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:177207934467:android:639ccb37fba1bd11269836",
+        "android_client_info": {
+          "package_name": "com.example.wegoo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyaJaC5JiEH_T0pJ6Hh-FRJBvsVwb2yCw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <!-- Toolbar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/neon_blue"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:title="Booking" />
+
+    <!-- Scrollable content -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Vehicle Image -->
+            <ImageView
+                android:id="@+id/imgBookingVehicle"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/placeholder_image" />
+
+            <!-- Vehicle Name -->
+            <TextView
+                android:id="@+id/tvBookingVehicleName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Vehicle Name"
+                android:textColor="@android:color/black"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <!-- Vehicle Type -->
+            <TextView
+                android:id="@+id/tvBookingVehicleType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Vehicle Type"
+                android:textSize="18sp" />
+
+            <!-- Vehicle Price -->
+            <TextView
+                android:id="@+id/tvBookingVehiclePrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Price"
+                android:textColor="@color/neon_blue"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <!-- Booking Details Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Booking Details"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <!-- Input: Name -->
+            <EditText
+                android:id="@+id/etUserName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="Your Name"
+                android:padding="12dp"
+                android:background="@drawable/edittext_bg" />
+
+            <!-- Input: Phone -->
+            <EditText
+                android:id="@+id/etUserPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:hint="Phone Number"
+                android:inputType="phone"
+                android:padding="12dp"
+                android:background="@drawable/edittext_bg" />
+
+            <!-- Input: Booking Date -->
+            <EditText
+                android:id="@+id/etBookingDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:hint="Booking Date"
+                android:focusable="false"
+                android:padding="12dp"
+                android:background="@drawable/edittext_bg" />
+
+            <!-- Input: Booking Time -->
+            <EditText
+                android:id="@+id/etBookingTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:hint="Booking Time"
+                android:focusable="false"
+                android:padding="12dp"
+                android:background="@drawable/edittext_bg" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- Confirm Booking Button -->
+    <Button
+        android:id="@+id/btnConfirmBooking"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        android:backgroundTint="@color/neon_blue"
+        android:padding="16dp"
+        android:text="Confirm Booking"
+        android:textColor="@android:color/white"
+        android:textSize="18sp" />
+
+</RelativeLayout>

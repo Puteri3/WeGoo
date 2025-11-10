@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:text="Login"
+        android:textColor="#00D1FF"
+        android:textSize="28sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/inputEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:hint="Email Address"
+        android:inputType="textEmailAddress"
+        android:padding="12dp"
+        android:textColor="#000000"
+        android:textColorHint="#757575"
+        android:backgroundTint="#00D1FF" />
+
+    <EditText
+        android:id="@+id/inputPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:padding="12dp"
+        android:textColor="#000000"
+        android:textColorHint="#757575"
+        android:backgroundTint="#00D1FF" />
+
+    <Button
+        android:id="@+id/btnLogIn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="#00D1FF"
+        android:text="LOG IN"
+        android:textColor="#000000"
+        android:textStyle="bold" />
+
+    <!-- PEMBETULAN: Menambah padding dan minHeight untuk membesarkan saiz sasaran sentuhan -->
+    <TextView
+        android:id="@+id/tvSignup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Don't have an account? Sign up"
+        android:textColor="#00D1FF"
+        android:textSize="14sp"
+        android:padding="8dp"
+        android:minHeight="48dp"
+        android:gravity="center"
+        android:clickable="true"
+        android:focusable="true" />
+
+    <!-- PEMBETULAN: Membuang layout_width yang tetap dan menambah padding serta minHeight -->
+    <TextView
+        android:id="@+id/tvProviderLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Provider access here."
+        android:textColor="#00D1FF"
+        android:textSize="15sp"
+        android:padding="8dp"
+        android:minHeight="48dp"
+        android:gravity="center"
+        android:clickable="true"
+        android:focusable="true" />
+
+    <!-- PEMBETULAN: Membuang '/>' yang tidak sah dari sini -->
+</LinearLayout>

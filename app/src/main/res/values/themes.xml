@@ -1,0 +1,27 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.WeGoo" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
+
+    <style name="Theme.WeGoo" parent="Base.Theme.WeGoo" />
+
+    <style name="Neon" parent="Theme.WeGoo" />
+
+    <style name="Neon.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/neon_blue</item>
+        <item name="hintTextColor">@color/neon_blue</item>
+        <item name="android:textColorHint">@color/neon_blue</item>
+    </style>
+
+    <style name="Neon.TextInputEditText">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="Neon.Button" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@color/neon_blue</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+</resources>
