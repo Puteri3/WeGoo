@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F3E5F5"
+    android:padding="24dp">
+
+    <!-- TOP: Question + Choices -->
+    <LinearLayout
+        android:id="@+id/questionContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_image_bg"
+        android:elevation="4dp"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:layout_marginBottom="16dp">
+
+        <TextView
+            android:id="@+id/tvQuestion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:gravity="center"
+            android:text="What planet is known as the Red Planet?"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <!-- CHOICES (MCQ) -->
+        <LinearLayout
+            android:id="@+id/mcqContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <!-- First Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnChoiceA"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="4dp"
+                    android:text="A) Earth"
+                    android:textAllCaps="false"
+                    android:textColor="#5E35B1"
+                    android:textSize="14sp"
+                    app:cornerRadius="12dp"
+                    app:strokeColor="#B39DDB" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnChoiceB"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="4dp"
+                    android:text="B) Mars"
+                    android:textAllCaps="false"
+                    android:textColor="#5E35B1"
+                    android:textSize="14sp"
+                    app:cornerRadius="12dp"
+                    app:strokeColor="#B39DDB" />
+            </LinearLayout>
+
+            <!-- Second Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnChoiceC"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="4dp"
+                    android:text="C) Venus"
+                    android:textAllCaps="false"
+                    android:textColor="#5E35B1"
+                    android:textSize="14sp"
+                    app:cornerRadius="12dp"
+                    app:strokeColor="#B39DDB" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnChoiceD"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="4dp"
+                    android:text="D) Jupiter"
+                    android:textAllCaps="false"
+                    android:textColor="#5E35B1"
+                    android:textSize="14sp"
+                    app:cornerRadius="12dp"
+                    app:strokeColor="#B39DDB" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- BOTTOM: Image + Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:paddingTop="8dp">
+
+        <ImageView
+            android:id="@+id/imgResult"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/question"
+            android:background="@drawable/rounded_image_bg"
+            android:padding="10dp"
+            android:elevation="4dp" />
+
+        <!-- True / False Buttons -->
+        <LinearLayout
+            android:id="@+id/trueFalseContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="16dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnTrue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:paddingVertical="12dp"
+                android:text="TRUE"
+                android:backgroundTint="#4CAF50"
+                app:cornerRadius="16dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnFalse"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:paddingVertical="12dp"
+                android:text="FALSE"
+                android:backgroundTint="#E53935"
+                app:cornerRadius="16dp" />
+        </LinearLayout>
+
+        <!-- Navigation Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnReturn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:text="Return"
+                android:backgroundTint="#9575CD"
+                app:cornerRadius="16dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnNext"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="Next"
+                android:backgroundTint="#512DA8"
+                app:cornerRadius="16dp" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
