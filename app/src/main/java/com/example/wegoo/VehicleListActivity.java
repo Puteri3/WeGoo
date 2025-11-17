@@ -50,7 +50,7 @@ public class VehicleListActivity extends AppCompatActivity implements VehicleAda
         loadVehicles();
 
         fabAddVehicle.setOnClickListener(v -> {
-            startActivity(new Intent(VehicleListActivity.this, AddVehicleActivity.class));
+            startActivity(new Intent(VehicleListActivity.this, ProviderHomepageActivity.class));
         });
     }
 
@@ -88,8 +88,9 @@ public class VehicleListActivity extends AppCompatActivity implements VehicleAda
     }
 
     @Override
-    public void onAddToCompareClick(Vehicle vehicle) {
+    public void onAddToCompareClick(Vehicle vehicle, boolean isChecked) {
         // Not applicable for this screen, so this is intentionally left empty.
+        Toast.makeText(this, "Compare feature not available here.", Toast.LENGTH_SHORT).show();
     }
 
     @Override

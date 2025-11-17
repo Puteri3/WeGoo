@@ -26,6 +26,16 @@
                 app:civ_border_color="@android:color/black"
                 app:civ_border_width="2dp" />
 
+            <Button
+                android:id="@+id/upload_image_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="@color/neon_blue"
+                android:text="Upload Image"
+                android:textColor="@android:color/white" />
+
             <!-- Name -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/name_layout"
@@ -39,9 +49,9 @@
                     android:id="@+id/name_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
                     android:textColor="@android:color/black"
-                    android:textColorHint="@android:color/black"
-                    android:inputType="textPersonName" />
+                    android:textColorHint="@android:color/black" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Age -->
@@ -57,28 +67,42 @@
                     android:id="@+id/age_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="number"
                     android:textColor="@android:color/black"
-                    android:textColorHint="@android:color/black"
-                    android:inputType="number" />
+                    android:textColorHint="@android:color/black" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- ID -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/id_layout"
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="ID"
-                app:hintTextColor="@android:color/black">
+                android:layout_marginTop="16dp">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/id_edit_text"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/id_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@android:color/black"
-                    android:textColorHint="@android:color/black"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:hint="ID"
+                    app:hintTextColor="@android:color/black">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/id_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:textColor="@android:color/black"
+                        android:textColorHint="@android:color/black" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <ImageButton
+                    android:id="@+id/toggle_id_visibility_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|center_vertical"
+                    android:layout_marginEnd="8dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_eye" />
+            </FrameLayout>
 
             <!-- Phone -->
             <com.google.android.material.textfield.TextInputLayout
@@ -93,9 +117,9 @@
                     android:id="@+id/phone_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="phone"
                     android:textColor="@android:color/black"
-                    android:textColorHint="@android:color/black"
-                    android:inputType="phone" />
+                    android:textColorHint="@android:color/black" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Email -->
@@ -111,9 +135,9 @@
                     android:id="@+id/email_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
                     android:textColor="@android:color/black"
-                    android:textColorHint="@android:color/black"
-                    android:inputType="textEmailAddress" />
+                    android:textColorHint="@android:color/black" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Birthday -->
@@ -129,9 +153,9 @@
                     android:id="@+id/birthday_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="date"
                     android:textColor="@android:color/black"
-                    android:textColorHint="@android:color/black"
-                    android:inputType="date" />
+                    android:textColorHint="@android:color/black" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Address -->
@@ -147,9 +171,9 @@
                     android:id="@+id/address_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
                     android:textColor="@android:color/black"
-                    android:textColorHint="@android:color/black"
-                    android:inputType="textMultiLine" />
+                    android:textColorHint="@android:color/black" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
@@ -158,9 +182,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="32dp"
+                android:backgroundTint="@color/neon_blue"
                 android:text="Save"
-                android:textColor="@android:color/white"
-                android:backgroundTint="@color/neon_blue" />
+                android:textColor="@android:color/white" />
 
         </LinearLayout>
     </ScrollView>

@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="16dp"
-                android:backgroundTint="@color/neon_blue"
+                android:backgroundTint="@android:color/holo_blue_bright"
                 android:text="Edit Profile"
                 android:textColor="@android:color/white" />
 

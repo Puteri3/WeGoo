@@ -1,35 +1,53 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="24dp">
+    android:layout_height="match_parent">
 
+    <!-- Background Image -->
     <ImageView
-        android:id="@+id/imageOnboarding"
-        android:layout_width="205dp"
-        android:layout_height="192dp"
-        android:layout_marginBottom="24dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/welcome1" />
-
-    <TextView
-        android:id="@+id/textTitle"
-        android:text="Welcome!"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="12dp"
-        android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:src="@drawable/bg_onboarding"
+        android:scaleType="centerCrop" />
 
-    <TextView
-        android:id="@+id/textDescription"
-        android:layout_width="wrap_content"
-        android:layout_height="84dp"
+    <!-- Gradient overlay to make text readable -->
+
+    <!-- Content Section -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
         android:gravity="center"
-        android:text="Discover the easiest way to manage your order to drive-on!"
-        android:textColor="#666"
-        android:textSize="16sp" />
-</LinearLayout>
+        android:padding="32dp">
+
+        <ImageView
+            android:id="@+id/imageOnboarding"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_marginBottom="24dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/welcome1" />
+
+        <TextView
+            android:id="@+id/textTitle"
+            android:text="Welcome!"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:textColor="#00D1FF"
+            android:layout_marginBottom="12dp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/textDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Discover the easiest way to manage your order to drive-on!"
+            android:textColor="#00D1FF"
+            android:textSize="16sp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp" />
+    </LinearLayout>
+
+</FrameLayout>

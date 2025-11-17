@@ -14,7 +14,12 @@
 
     <item
         android:id="@+id/menu_contact"
-        android:title="Contact Provider"
+        android:title="Contact Us"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_logout"
+        android:title="Logout"
         app:showAsAction="never" />
 
 </menu>

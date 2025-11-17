@@ -8,8 +8,6 @@
     tools:context=".CustomerListActivity">
 
     <!-- Header Bar -->
-
-    <!-- Top action buttons -->
     <LinearLayout
         android:id="@+id/headerBar"
         android:layout_width="match_parent"
@@ -30,7 +28,7 @@
 
         <TextView
             android:id="@+id/tvHeaderTitle"
-            android:layout_width="206dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:text="Customer List"
@@ -39,11 +37,12 @@
             android:textStyle="bold" />
     </LinearLayout>
 
+    <!-- Action Button -->
     <LinearLayout
         android:id="@+id/actionButtons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/headerBar"
+        android:layout_below="@id/headerBar"
         android:layout_margin="16dp"
         android:orientation="horizontal"
         android:gravity="end">
@@ -64,7 +63,7 @@
         android:id="@+id/cardRecycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/actionButtons"
+        android:layout_below="@id/actionButtons"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"

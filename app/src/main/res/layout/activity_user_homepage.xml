@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F5F5F5">
 
+    <!-- 🧭 Toolbar -->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -19,12 +21,14 @@
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
     </com.google.android.material.appbar.AppBarLayout>
 
+    <!-- 📜 Content -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <!-- 🔍 Search Bar -->
         <EditText
             android:id="@+id/searchBar"
             android:layout_width="match_parent"
@@ -34,8 +38,13 @@
             android:drawableStart="@android:drawable/ic_menu_search"
             android:drawablePadding="12dp"
             android:hint="Search car type..."
-            android:padding="12dp" />
+            android:padding="12dp"
+            android:imeOptions="actionDone"
+            android:inputType="text" />
 
+        <!-- 🚗 Vehicle List -->
+
+        <!-- ⚓ Bottom Navigation -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerVehicles"
             android:layout_width="match_parent"
@@ -48,9 +57,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/white"
+            app:itemIconTint="@color/black"
+            app:itemTextColor="@color/black"
             app:menu="@menu/user_bottom_nav_menu" />
     </LinearLayout>
 
+    <!-- 🔘 Floating Buttons -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_compare"
         android:layout_width="wrap_content"
@@ -59,6 +71,18 @@
         android:layout_margin="16dp"
         android:src="@drawable/ic_compare"
         android:visibility="gone"
-        app:backgroundTint="@color/neon_blue"
+        app:backgroundTint="@android:color/holo_blue_bright"
         app:tint="@android:color/white" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_history"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="80dp"
+        android:src="@android:drawable/ic_menu_recent_history"
+        app:backgroundTint="@android:color/holo_blue_bright"
+        app:tint="@android:color/white" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

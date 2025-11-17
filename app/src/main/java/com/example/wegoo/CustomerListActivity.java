@@ -10,8 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,6 @@ import java.util.List;
 public class CustomerListActivity extends AppCompatActivity {
 
     private static final String TAG = "CustomerListActivity";
-
     private RecyclerView rvCustomerList;
     private CustomerAdapter customerAdapter;
     private List<Customer> customerList;
@@ -30,57 +29,66 @@ public class CustomerListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_list);
 
-        // Initialize RecyclerView
         rvCustomerList = findViewById(R.id.rvCustomerList);
         rvCustomerList.setLayoutManager(new LinearLayoutManager(this));
 
-        // Initialize customer list and adapter
         customerList = new ArrayList<>();
-        customerAdapter = new CustomerAdapter(customerList);
+        customerAdapter = new CustomerAdapter(this, customerList);
         rvCustomerList.setAdapter(customerAdapter);
 
-        // Initialize Firebase Firestore
         db = FirebaseFirestore.getInstance();
 
-        // Fetch customer data from Firestore
         fetchCustomers();
 
-        // Set up refresh button
         Button btnRefresh = findViewById(R.id.btnRefresh);
         btnRefresh.setOnClickListener(v -> {
             fetchCustomers();
             Toast.makeText(this, "Refreshing...", Toast.LENGTH_SHORT).show();
         });
 
-        // Set up back button
         ImageButton btnBackHome = findViewById(R.id.btnBackHome);
-        btnBackHome.setOnClickListener(v -> {
-            // Finish the activity to go back to the previous screen
-            finish();
-        });
+        btnBackHome.setOnClickListener(v -> finish());
     }
 
     private void fetchCustomers() {
-        customerList.clear(); // Clear the list before fetching new data
+        customerList.clear();
+
         db.collection("Users")
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            Customer customer = document.toObject(Customer.class);
-                            
-                            // TODO: Here you would also fetch the booking information for each customer.
-                            // This would likely involve another Firestore query to a "Bookings" or "Rentals" collection,
-                            // filtering by the customer's ID (document.getId()).
-                            // For now, we'll just display the user info.
-                            // You would then update the Customer object with vehicle and damage details.
+                        for (DocumentSnapshot userDoc : task.getResult()) {
+                            Customer customer = userDoc.toObject(Customer.class);
+                            String userName = customer.getName(); // ambil name dari Users
 
-                            customerList.add(customer);
+                            // Fetch latest booking
+                            db.collection("bookings")
+                                    .whereEqualTo("userName", userName)
+                                    .orderBy("timestamp", com.google.firebase.firestore.Query.Direction.DESCENDING)
+                                    .limit(1)
+                                    .get()
+                                    .addOnCompleteListener(bookingTask -> {
+                                        if (bookingTask.isSuccessful() && !bookingTask.getResult().isEmpty()) {
+                                            DocumentSnapshot bookingDoc = bookingTask.getResult().getDocuments().get(0);
+                                            customer.setVehicleName(bookingDoc.getString("vehicleName"));
+                                            customer.setVehiclePrice(bookingDoc.getDouble("vehiclePrice"));
+                                            customer.setVehicleType(bookingDoc.getString("vehicleType"));
+                                            customer.setBookingDate(bookingDoc.getString("bookingDate"));
+                                            customer.setBookingTime(bookingDoc.getString("bookingTime"));
+                                            customer.setPickupLocation(bookingDoc.getString("pickupLocation"));
+                                            customer.setUserPhone(bookingDoc.getString("userPhone"));
+                                            customer.setImageUrl(bookingDoc.getString("imageUrl"));
+                                        } else {
+                                            customer.setVehicleName("No booking");
+                                        }
+
+                                        customerList.add(customer);
+                                        customerAdapter.notifyDataSetChanged();
+                                    });
                         }
-                        customerAdapter.notifyDataSetChanged(); // Notify the adapter that the data has changed
                     } else {
                         Log.w(TAG, "Error getting documents.", task.getException());
-                        Toast.makeText(CustomerListActivity.this, "Error fetching customers.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Error fetching customers.", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

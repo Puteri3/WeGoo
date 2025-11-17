@@ -4,12 +4,13 @@
     android:orientation="vertical"
     android:padding="8dp">
 
-    <ImageView
-        android:id="@+id/imgVehicle"
+    <!-- Horizontal Images -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvVehicleImages"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/placeholder_image" />
+        android:orientation="horizontal"
+        android:overScrollMode="never"/>
 
     <TextView
         android:id="@+id/tvVehicleName"
@@ -46,6 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginEnd="4dp"
+            android:backgroundTint="@android:color/holo_blue_bright"
             android:text="Book Now" />
 
         <Button
@@ -54,6 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginStart="4dp"
+            android:backgroundTint="@android:color/holo_blue_bright"
             android:text="Add to Compare" />
 
     </LinearLayout>

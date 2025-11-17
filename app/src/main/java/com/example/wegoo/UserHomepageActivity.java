@@ -1,45 +1,57 @@
 package com.example.wegoo;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.widget.EditText;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserHomepageActivity extends AppCompatActivity implements UserVehicleAdapter.OnItemClickListener {
 
-    private RecyclerView recyclerView;
+    private static final String TAG = "UserHomepageActivity";
     private UserVehicleAdapter vehicleAdapter;
     private List<Vehicle> vehicleList;
-    private DatabaseReference databaseReference;
-    private EditText searchBar;
     private FloatingActionButton fabCompare;
-    private ArrayList<Vehicle> selectedVehicles = new ArrayList<>();
+    private FloatingActionButton fabHistory;
+    private final ArrayList<Vehicle> selectedVehicles = new ArrayList<>();
 
+    private FirebaseFirestore db;
+
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_homepage);
 
-        recyclerView = findViewById(R.id.recyclerVehicles);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        RecyclerView recyclerView = findViewById(R.id.recyclerVehicles);
+        EditText searchBar = findViewById(R.id.searchBar);
+        fabCompare = findViewById(R.id.fab_compare);
+        fabHistory = findViewById(R.id.fab_history);
+
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -47,43 +59,48 @@ public class UserHomepageActivity extends AppCompatActivity implements UserVehic
         vehicleAdapter = new UserVehicleAdapter(vehicleList, this);
         recyclerView.setAdapter(vehicleAdapter);
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("vehicles");
+        db = FirebaseFirestore.getInstance();
 
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                vehicleList.clear();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Vehicle vehicle = dataSnapshot.getValue(Vehicle.class);
-                    vehicleList.add(vehicle);
-                }
-                vehicleAdapter.notifyDataSetChanged();
+        // 🔹 Dengar data Firestore
+        db.collection("vehicles").addSnapshotListener((value, error) -> {
+            if (error != null) {
+                Log.e(TAG, "Listen failed.", error);
+                return;
             }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            if (value != null) {
+                vehicleList.clear();
 
+                for (QueryDocumentSnapshot doc : value) {
+                    Vehicle vehicle = doc.toObject(Vehicle.class);
+                    vehicleList.add(vehicle);
+                }
+
+                vehicleAdapter.notifyDataSetChanged();
             }
         });
 
-        searchBar = findViewById(R.id.searchBar);
+        // 🔹 Carian kenderaan
         searchBar.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 filter(s.toString());
             }
-
             @Override
             public void afterTextChanged(Editable s) {}
         });
 
-        fabCompare = findViewById(R.id.fab_compare);
+        // 🔹 Butang Compare
         fabCompare.setOnClickListener(v -> {
             Intent intent = new Intent(UserHomepageActivity.this, CompareTableActivity.class);
             intent.putExtra("selectedVehicles", selectedVehicles);
+            startActivity(intent);
+        });
+
+        fabHistory.setOnClickListener(v -> {
+            Intent intent = new Intent(UserHomepageActivity.this, UserHistoryActivity.class);
             startActivity(intent);
         });
     }
@@ -99,23 +116,62 @@ public class UserHomepageActivity extends AppCompatActivity implements UserVehic
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.top_toolbar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int itemId = item.getItemId();
+        if (itemId == R.id.menu_logout) {
+            FirebaseAuth.getInstance().signOut();
+            Toast.makeText(this, "Logged out successfully", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(UserHomepageActivity.this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+            return true;
+        } else if (itemId == R.id.menu_compare) {
+            // Handle compare menu item click
+            return true;
+        } else if (itemId == R.id.menu_about) {
+            // Handle about menu item click
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onBookNowClick(int position) {
-        Vehicle selectedVehicle = vehicleList.get(position);
+        Vehicle vehicle = vehicleList.get(position);
         Intent intent = new Intent(UserHomepageActivity.this, BookingActivity.class);
-        intent.putExtra("vehicleName", selectedVehicle.getVehicleName());
-        intent.putExtra("vehicleType", selectedVehicle.getVehicleType());
-        intent.putExtra("vehiclePrice", selectedVehicle.getVehiclePrice());
-        intent.putExtra("imageUrl", selectedVehicle.getImageUrl());
+        intent.putExtra("vehicleName", vehicle.getVehicleName());
+        intent.putExtra("vehicleType", vehicle.getVehicleType());
+        try {
+            double price = Double.parseDouble(vehicle.getVehiclePrice());
+            intent.putExtra("vehiclePrice", price);
+        } catch (NumberFormatException e) {
+            Log.e(TAG, "Could not parse vehicle price: " + vehicle.getVehiclePrice());
+            intent.putExtra("vehiclePrice", 0.0); // Default to 0.0 if parsing fails
+        }
+        if (vehicle.getImageUrl() != null && !vehicle.getImageUrl().isEmpty()) {
+            intent.putExtra("imageUrl", vehicle.getImageUrl());
+        }
         startActivity(intent);
     }
 
     @Override
     public void onCheckboxClick(int position, boolean isChecked) {
-        vehicleList.get(position).setSelected(isChecked);
+        Vehicle vehicle = vehicleList.get(position);
+        vehicle.setSelected(isChecked);
+
         if (isChecked) {
-            selectedVehicles.add(vehicleList.get(position));
+            if (!selectedVehicles.contains(vehicle)) {
+                selectedVehicles.add(vehicle);
+            }
         } else {
-            selectedVehicles.remove(vehicleList.get(position));
+            selectedVehicles.remove(vehicle);
         }
 
         if (selectedVehicles.size() >= 2) {

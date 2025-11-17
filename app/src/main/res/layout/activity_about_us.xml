@@ -18,14 +18,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/toolbar"
+        android:layout_marginTop="83dp"
         android:orientation="vertical"
+        android:outlineAmbientShadowColor="#00BCD4"
+        android:outlineSpotShadowColor="#6A6767"
         android:padding="16dp">
 
         <ImageView
-            android:layout_width="150dp"
+            android:layout_width="255dp"
             android:layout_height="150dp"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/ic_launcher_foreground" />
+            android:src="@drawable/msn" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -37,13 +40,18 @@
             android:textSize="24sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="match_parent"
+
+        <Button
+            android:id="@+id/tvWhatsApp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
-            android:gravity="center"
-            android:text="Your go-to app for vehicle rentals. We provide a seamless booking experience and a wide range of vehicles to choose from."
-            android:textSize="16sp" />
+            android:backgroundTint="@color/neon_blue"
+            android:text="Chat us on WhatsApp"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 

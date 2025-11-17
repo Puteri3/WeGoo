@@ -48,8 +48,6 @@ public class CompareTableActivity extends AppCompatActivity {
             featureMap.put("Engine Capacity", new ArrayList<>());
             featureMap.put("Seating Capacity", new ArrayList<>());
             featureMap.put("Color", new ArrayList<>());
-            featureMap.put("Transmission", new ArrayList<>());
-
 
             // Populate the feature map
             for (Vehicle vehicle : selectedVehicles) {
@@ -57,9 +55,8 @@ public class CompareTableActivity extends AppCompatActivity {
                 featureMap.get("Price").add(vehicle.getVehiclePrice());
                 featureMap.get("Fuel Type").add(vehicle.getFuelType());
                 featureMap.get("Engine Capacity").add(vehicle.getEngineCapacity());
-                featureMap.get("Seating Capacity").add(vehicle.getSeatingCapacity());
+                featureMap.get("Seating Capacity").add(vehicle.getSeatingCapacity()); // Reverted
                 featureMap.get("Color").add(vehicle.getColor());
-                featureMap.get("Transmission").add(vehicle.getTransmission());
             }
 
             // Add rows to the table for each feature

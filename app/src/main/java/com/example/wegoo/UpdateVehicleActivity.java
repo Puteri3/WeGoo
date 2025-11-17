@@ -1,14 +1,12 @@
 package com.example.wegoo;
 
 import android.Manifest;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -20,12 +18,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
+import com.cloudinary.android.MediaManager;
+import com.cloudinary.android.callback.ErrorInfo;
+import com.cloudinary.android.callback.UploadCallback;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,7 +31,6 @@ public class UpdateVehicleActivity extends AppCompatActivity {
     private static final String TAG = "UpdateVehicleActivity";
 
     private FirebaseFirestore firestore;
-    private StorageReference storageRef;
 
     private EditText etVehicleName, etVehicleType, etVehiclePrice, etFuelType, etEngineCapacity, etSeatingCapacity, etColor, etTransmission;
     private ImageView imgPreview;
@@ -62,7 +58,6 @@ public class UpdateVehicleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_update_vehicle);
 
         firestore = FirebaseFirestore.getInstance();
-        storageRef = FirebaseStorage.getInstance().getReference("vehicle_images");
 
         etVehicleName = findViewById(R.id.etVehicleName);
         etVehicleType = findViewById(R.id.etVehicleType);
@@ -143,7 +138,7 @@ public class UpdateVehicleActivity extends AppCompatActivity {
         // Case 1: A NEW image was selected
         if (selectedImageUri != null) {
             Log.d(TAG, "saveVehicle: New image selected. Starting upload process.");
-            uploadImageAndSaveVehicle(name, type, priceText, fuelType, engineCapacity, seatingCapacity, color, transmission);
+            uploadToCloudinaryAndSaveVehicle(name, type, priceText, fuelType, engineCapacity, seatingCapacity, color, transmission);
         }
         // Case 2: NO new image was selected, but we are updating an existing vehicle
         else if (vehicleId != null && currentVehicle != null && currentVehicle.getImageUrl() != null) {
@@ -157,57 +152,48 @@ public class UpdateVehicleActivity extends AppCompatActivity {
         }
     }
 
-    // ⭐ ROBUST UPLOAD FIX: Using putStream()
-    private void uploadImageAndSaveVehicle(String name, String type, String priceText, String fuelType, String engineCapacity, String seatingCapacity, String color, String transmission) {
+    private void uploadToCloudinaryAndSaveVehicle(String name, String type, String priceText, String fuelType, String engineCapacity, String seatingCapacity, String color, String transmission) {
         if (selectedImageUri != null) {
-            Toast.makeText(this, "Uploading image...", Toast.LENGTH_LONG).show();
-            Log.d(TAG, "uploadImageAndSaveVehicle: Attempting upload from URI: " + selectedImageUri.toString());
+            Toast.makeText(this, "Uploading image to Cloudinary...", Toast.LENGTH_LONG).show();
+            Log.d(TAG, "uploadToCloudinary: Uploading URI: " + selectedImageUri.toString());
 
-            StorageReference fileReference = storageRef.child(System.currentTimeMillis()
-                    + "." + getFileExtension(selectedImageUri));
-
-            try {
-                // Get the InputStream from the content URI
-                InputStream inputStream = getContentResolver().openInputStream(selectedImageUri);
-
-                if (inputStream != null) {
-                    fileReference.putStream(inputStream)
-                            .addOnSuccessListener(taskSnapshot -> {
-                                Log.d(TAG, "uploadImageAndSaveVehicle: Image uploaded successfully via Stream.");
-                                fileReference.getDownloadUrl().addOnSuccessListener(uri -> {
-                                    String downloadUrl = uri.toString();
-                                    Toast.makeText(this, "Image uploaded successfully!", Toast.LENGTH_SHORT).show();
-
-                                    // Save all data with the new public URL
-                                    saveDataToFirestore(name, type, priceText, downloadUrl, fuelType, engineCapacity, seatingCapacity, color, transmission);
-                                }).addOnFailureListener(e -> {
-                                    Log.e(TAG, "uploadImageAndSaveVehicle: Failed to get download URL", e);
-                                    Toast.makeText(UpdateVehicleActivity.this, "Failed to get image URL.", Toast.LENGTH_SHORT).show();
-                                });
-                            })
-                            .addOnFailureListener(e -> {
-                                Toast.makeText(this, "Upload failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                                Log.e(TAG, "uploadImageAndSaveVehicle: Upload failed", e);
-                            });
-                } else {
-                    Toast.makeText(this, "Could not open image file stream.", Toast.LENGTH_LONG).show();
+            MediaManager.get().upload(selectedImageUri).callback(new UploadCallback() {
+                @Override
+                public void onStart(String requestId) {
+                    Log.d(TAG, "Cloudinary upload started.");
                 }
-            } catch (FileNotFoundException e) {
-                // Catch the specific error: "picture does not exist at location"
-                Toast.makeText(this, "Upload failed: Picture file not accessible/found.", Toast.LENGTH_LONG).show();
-                Log.e(TAG, "uploadImageAndSaveVehicle: File Not Found Exception", e);
-            }
+
+                @Override
+                public void onProgress(String requestId, long bytes, long totalBytes) {
+                    // You can add progress bar logic here if needed
+                }
+
+                @Override
+                public void onSuccess(String requestId, Map resultData) {
+                    Log.d(TAG, "Cloudinary upload successful.");
+                    String imageUrl = (String) resultData.get("secure_url");
+                    if (imageUrl != null) {
+                        Toast.makeText(UpdateVehicleActivity.this, "Image uploaded successfully!", Toast.LENGTH_SHORT).show();
+                        saveDataToFirestore(name, type, priceText, imageUrl, fuelType, engineCapacity, seatingCapacity, color, transmission);
+                    } else {
+                        Log.e(TAG, "Cloudinary upload error: URL is null.");
+                        Toast.makeText(UpdateVehicleActivity.this, "Upload failed: Could not get image URL.", Toast.LENGTH_LONG).show();
+                    }
+                }
+
+                @Override
+                public void onError(String requestId, ErrorInfo error) {
+                    Log.e(TAG, "Cloudinary upload failed: " + error.getDescription());
+                    Toast.makeText(UpdateVehicleActivity.this, "Upload failed: " + error.getDescription(), Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void onReschedule(String requestId, ErrorInfo error) {
+                    Log.w(TAG, "Cloudinary upload rescheduled: " + error.getDescription());
+                }
+            }).dispatch();
         }
     }
-
-
-    private String getFileExtension(Uri uri) {
-        ContentResolver cR = getContentResolver();
-        MimeTypeMap mime = MimeTypeMap.getSingleton();
-        String extension = mime.getExtensionFromMimeType(cR.getType(uri));
-        return extension != null ? extension : "jpg"; // Default to jpg if mime type is unknown
-    }
-
 
     private void saveDataToFirestore(String name, String type, String price, String imageUrl, String fuelType, String engineCapacity, String seatingCapacity, String color, String transmission) {
         Log.d(TAG, "saveDataToFirestore: Saving data to Firestore. Image URL: " + imageUrl);

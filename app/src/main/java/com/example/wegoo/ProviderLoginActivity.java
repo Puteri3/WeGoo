@@ -16,7 +16,7 @@ public class ProviderLoginActivity extends AppCompatActivity {
 
     private EditText inputProviderEmail, inputProviderPassword;
     private Button btnProviderLogin;
-    private TextView tvBackToUser;
+    private TextView tvBackToUser, tvForgotPassword;
     private FirebaseAuth mAuth;
 
     // Default Provider Account (Registered manually in Firebase Authentication)
@@ -32,9 +32,15 @@ public class ProviderLoginActivity extends AppCompatActivity {
         inputProviderPassword = findViewById(R.id.inputProviderPassword);
         btnProviderLogin = findViewById(R.id.btnProviderLogin);
         tvBackToUser = findViewById(R.id.tvBackToUser);
+        tvForgotPassword = findViewById(R.id.tvForgotPassword);
 
         // 🔹 Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
+
+        // 🔹 Forgot Password click
+//        tvForgotPassword.setOnClickListener(v -> {
+//            startActivity(new Intent(ProviderLoginActivity.this, ForgotPasswordActivity.class));
+//        });
 
         // 🟢 Handle Provider Login
         btnProviderLogin.setOnClickListener(v -> {

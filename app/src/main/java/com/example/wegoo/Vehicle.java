@@ -1,37 +1,45 @@
 package com.example.wegoo;
 
+import com.google.firebase.firestore.Exclude;
+import com.google.firebase.firestore.PropertyName;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Vehicle {
-    private String id; // Critical field for database operations
+    private String id;
     private String vehicleName;
     private String vehicleType;
     private String vehiclePrice;
-    private String imageUrl; // Holds the public Firebase Storage URL
+    private List<String> imageUrls;
     private String fuelType;
     private String engineCapacity;
     private String seatingCapacity;
     private String color;
     private String transmission;
-    private boolean isSelected = false;
+    private boolean isBooked;
 
+
+    @Exclude
+    private boolean selected;
+
+    // Default constructor required for calls to DataSnapshot.getValue(Vehicle.class)
     public Vehicle() {
-        // Default constructor required for Firestore
     }
 
-    public Vehicle(String vehicleName, String vehicleType, String vehiclePrice, String imageUrl, String fuelType, String engineCapacity, String seatingCapacity, String color, String transmission) {
+    public Vehicle(String vehicleId, String vehicleName, String vehicleType, String vehiclePrice, String fuelType, String engineCapacity, String seatingCapacity, String color, ArrayList<String> imageUrls, String transmission) {
+        this.id = vehicleId;
         this.vehicleName = vehicleName;
         this.vehicleType = vehicleType;
         this.vehiclePrice = vehiclePrice;
-        this.imageUrl = imageUrl;
         this.fuelType = fuelType;
         this.engineCapacity = engineCapacity;
         this.seatingCapacity = seatingCapacity;
         this.color = color;
+        this.imageUrls = imageUrls;
         this.transmission = transmission;
     }
 
-    // --- Getters and Setters ---
-
-    // ID is crucial for Edit/Delete/Booking/Compare
     public String getId() {
         return id;
     }
@@ -64,12 +72,30 @@ public class Vehicle {
         this.vehiclePrice = vehiclePrice;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public List<String> getImageUrls() {
+        return imageUrls;
     }
 
+    public void setImageUrls(List<String> imageUrls) {
+        this.imageUrls = imageUrls;
+    }
+
+    @PropertyName("imageUrl")
+    public String getImageUrl() {
+        if (imageUrls != null && !imageUrls.isEmpty()) {
+            return imageUrls.get(0);
+        }
+        return null;
+    }
+
+    @PropertyName("imageUrl")
     public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+        if (this.imageUrls == null) {
+            this.imageUrls = new ArrayList<>();
+        } else {
+            this.imageUrls.clear();
+        }
+        this.imageUrls.add(imageUrl);
     }
 
     public String getFuelType() {
@@ -112,11 +138,21 @@ public class Vehicle {
         this.transmission = transmission;
     }
 
-    public boolean isSelected() {
-        return isSelected;
+    public boolean isBooked() {
+        return isBooked;
     }
 
+    public void setBooked(boolean booked) {
+        isBooked = booked;
+    }
+
+    @Exclude
+    public boolean isSelected() {
+        return selected;
+    }
+
+    @Exclude
     public void setSelected(boolean selected) {
-        isSelected = selected;
+        this.selected = selected;
     }
 }

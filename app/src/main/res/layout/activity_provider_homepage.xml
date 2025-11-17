@@ -1,125 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EAF3FF"
-    android:padding="24dp">
+    android:background="#EAF3FF">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal">
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:title="Provider Dashboard"
+        app:titleTextColor="@android:color/white" />
 
-        <!-- Logo -->
-        <ImageView
-            android:id="@+id/imgLogo"
-            android:src="@drawable/provider_logo"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginBottom="12dp"
-            android:contentDescription="Provider Logo" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:padding="24dp">
 
-        <!-- Dashboard Title -->
-        <TextView
-            android:id="@+id/tvTitle"
-            android:text="Provider Dashboard"
-            android:textSize="22sp"
-            android:textColor="#0A58CA"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp" />
-
-        <!-- Profile Card -->
         <LinearLayout
-            android:orientation="vertical"
-            android:background="@drawable/bg_card"
-            android:padding="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:elevation="4dp"
-            android:layout_marginBottom="24dp">
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tvProviderName"
-                android:text="Provider Name: John Doe"
-                android:textColor="#1E1E1E"
-                android:textSize="16sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            <!-- Logo -->
+            <ImageView
+                android:id="@+id/imgLogo"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginBottom="12dp"
+                android:contentDescription="Provider Logo"
+                android:src="@drawable/provider_logo" />
 
+            <!-- Dashboard Title -->
             <TextView
-                android:id="@+id/tvProviderEmail"
-                android:text="Email: johndoe@example.com"
-                android:textColor="#555"
-                android:textSize="14sp"
-                android:layout_marginTop="4dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:id="@+id/tvTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:gravity="center"
+                android:text="Provider Dashboard"
+                android:textColor="#0A58CA"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <!-- Profile Card -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/bg_card"
+                android:elevation="4dp"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/tvProviderName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Provider Name: John Doe"
+                    android:textColor="#1E1E1E"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tvProviderEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Email: johndoe@example.com"
+                    android:textColor="#555"
+                    android:textSize="14sp" />
+
+                <Button
+                    android:id="@+id/btnProfileSettings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="10dp"
+                    android:backgroundTint="@android:color/holo_blue_dark"
+                    android:paddingLeft="24dp"
+                    android:paddingRight="24dp"
+                    android:text="Profile Settings"
+                    android:textColor="#FFFFFF" />
+            </LinearLayout>
+
+            <!-- Dashboard Buttons -->
+            <Button
+                android:id="@+id/btnUpdate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:backgroundTint="@android:color/holo_blue_dark"
+                android:padding="12dp"
+                android:text="Update / Manage Vehicle"
+                android:textColor="#FFFFFF" />
 
             <Button
-                android:id="@+id/btnProfileSettings"
-                android:text="Profile Settings"
-                android:layout_width="wrap_content"
+                android:id="@+id/btnHistory"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:backgroundTint="#0A58CA"
+                android:layout_marginBottom="12dp"
+                android:backgroundTint="@android:color/holo_blue_dark"
+                android:padding="12dp"
+                android:text="View History"
+                android:textColor="#FFFFFF" />
+
+            <Button
+                android:id="@+id/btnCustomers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:backgroundTint="@android:color/holo_blue_dark"
+                android:padding="12dp"
+                android:text="List of Customers"
                 android:textColor="#FFFFFF"
-                android:paddingLeft="24dp"
-                android:paddingRight="24dp"
-                android:layout_gravity="end"/>
+                tools:ignore="MissingPrefix" />
+
+            <Button
+                android:id="@+id/btnOpenCV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/holo_blue_dark"
+                android:padding="12dp"
+                android:text="OpenCV Damage Detection"
+                android:textColor="#FFFFFF" />
+
         </LinearLayout>
-
-        <!-- RecyclerView for Vehicles -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewVehicles"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp" />
-
-        <!-- Dashboard Buttons -->
-        <Button
-            android:id="@+id/btnUpdate"
-            android:text="Update / Manage Vehicle"
-            android:backgroundTint="#0A58CA"
-            android:textColor="#FFFFFF"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:padding="12dp" />
-
-        <Button
-            android:id="@+id/btnHistory"
-            android:text="View History"
-            android:backgroundTint="#0A58CA"
-            android:textColor="#FFFFFF"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:padding="12dp" />
-
-        <Button
-            android:id="@+id/btnCustomers"
-            android:text="List of Customers"
-            android:backgroundTint="#0A58CA"
-            android:textColor="#FFFFFF"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:padding="12dp"
-            tools:ignore="MissingPrefix" />
-
-        <Button
-            android:id="@+id/btnOpenCV"
-            android:text="OpenCV Damage Detection"
-            android:backgroundTint="#0A58CA"
-            android:textColor="#FFFFFF"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="12dp" />
-
-    </LinearLayout>
-</ScrollView>
+    </ScrollView>
+</RelativeLayout>

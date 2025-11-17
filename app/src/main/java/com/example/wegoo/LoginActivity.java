@@ -10,13 +10,12 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText inputEmail, inputPassword;
+    private EditText etEmail, etPassword;
     private Button btnLogin;
-    private TextView tvSignup, tvProviderLogin;
+    private TextView tvSignUp, btnLoginAsProvider;
     private FirebaseAuth mAuth;
 
     @Override
@@ -24,57 +23,48 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
 
-        // 🔹 Initialize UI
-        inputEmail = findViewById(R.id.inputEmail);
-        inputPassword = findViewById(R.id.inputPassword);
-        btnLogin = findViewById(R.id.btnLogIn);
-        tvSignup = findViewById(R.id.tvSignup);
-        tvProviderLogin = findViewById(R.id.tvProviderLogin);
+        // Initialize UI components
+        etEmail = findViewById(R.id.etEmail);
+        etPassword = findViewById(R.id.etPassword);
+        btnLogin = findViewById(R.id.btnLogin);
+        btnLoginAsProvider = findViewById(R.id.btnLoginAsProvider);
+        tvSignUp = findViewById(R.id.tvSignUp);
 
-        // 🔹 Firebase Auth
+        // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
-        // 🔹 Login button click
+        // Handle Login
         btnLogin.setOnClickListener(v -> {
-            String email = inputEmail.getText().toString().trim();
-            String password = inputPassword.getText().toString().trim();
+            String email = etEmail.getText().toString().trim();
+            String password = etPassword.getText().toString().trim();
 
             if (email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(LoginActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // 🔹 Firebase login
             mAuth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(task -> {
+                    .addOnCompleteListener(this, task -> {
                         if (task.isSuccessful()) {
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            if (user != null) {
-                                Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
-
-                                // ✅ Go to User Homepage after login
-                                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                                startActivity(intent);
-                                finish();
-                            }
+                            // TODO: Add role-based redirection if needed
+                            Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                            finish();
                         } else {
-                            Toast.makeText(LoginActivity.this,
-                                    "Login failed: " + task.getException().getMessage(),
-                                    Toast.LENGTH_LONG).show();
+                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
                         }
                     });
         });
 
-        // 🔹 Go to signup page
-        tvSignup.setOnClickListener(v -> {
+        // Handle Sign Up navigation
+        tvSignUp.setOnClickListener(v -> {
             startActivity(new Intent(LoginActivity.this, UserSignUpActivity.class));
-            finish();
         });
 
-        // 🔹 Go to provider login page
-        tvProviderLogin.setOnClickListener(v -> {
-            Intent intent = new Intent(LoginActivity.this, ProviderLoginActivity.class);
-            startActivity(intent);
+        // Handle Provider Login navigation
+        btnLoginAsProvider.setOnClickListener(v -> {
+            startActivity(new Intent(LoginActivity.this, ProviderLoginActivity.class));
         });
     }
 }

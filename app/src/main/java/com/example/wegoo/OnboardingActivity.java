@@ -9,6 +9,10 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.appcheck.FirebaseAppCheck;
+import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,31 +21,22 @@ public class OnboardingActivity extends AppCompatActivity {
     private ViewPager2 viewPager;
     private OnboardingAdapter adapter;
     private LinearLayout layoutIndicators;
-    private Button btnNext, btnSkip;
+    private Button btnNext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // 🔹 [REMOVED] The check for whether onboarding was already done has been removed.
-        /*
-        SharedPreferences prefs = getSharedPreferences("onboarding", MODE_PRIVATE);
-        boolean isOnboardingDone = prefs.getBoolean("done", false);
+        // Initialize Firebase and App Check
+        FirebaseApp.initializeApp(/*context=*/ this);
+        FirebaseAppCheck firebaseAppCheck = FirebaseAppCheck.getInstance();
+        firebaseAppCheck.installAppCheckProviderFactory(
+                PlayIntegrityAppCheckProviderFactory.getInstance());
 
-        if (isOnboardingDone) {
-            // If already done, go straight to LoginActivity
-            startActivity(new Intent(OnboardingActivity.this, LoginActivity.class));
-            finish();
-            return;
-        }
-        */
-
-        // 🔹 The app will now always show the onboarding layout on launch.
         setContentView(R.layout.onboarding);
 
         layoutIndicators = findViewById(R.id.layoutIndicators);
         btnNext = findViewById(R.id.btnNext);
-        btnSkip = findViewById(R.id.btnSkip);
         viewPager = findViewById(R.id.viewPager);
 
         setupOnboardingItems();
@@ -56,7 +51,7 @@ public class OnboardingActivity extends AppCompatActivity {
                 super.onPageSelected(position);
                 setCurrentIndicator(position);
                 if (position == adapter.getItemCount() - 1) {
-                    btnNext.setText("Get Started");
+                    btnNext.setText("Skip");
                 } else {
                     btnNext.setText("Next");
                 }
@@ -70,8 +65,6 @@ public class OnboardingActivity extends AppCompatActivity {
                 goToLogin();
             }
         });
-
-        btnSkip.setOnClickListener(v -> goToLogin());
     }
 
     private void setupOnboardingItems() {
@@ -82,18 +75,11 @@ public class OnboardingActivity extends AppCompatActivity {
                 "Welcome to WeGoo",
                 "Discover the easiest way to manage your order to drive-on!"
         ));
-
-        // You can add more onboarding items here if you want
-        // items.add(new OnboardingItem(R.drawable.welcome2, "Title 2", "Description 2"));
-        // items.add(new OnboardingItem(R.drawable.welcome3, "Title 3", "Description 3"));
-
-
         adapter = new OnboardingAdapter(items);
         viewPager.setAdapter(adapter);
     }
 
     private void setupIndicators() {
-        // It's good practice to remove existing views before adding new ones
         layoutIndicators.removeAllViews();
 
         TextView[] indicators = new TextView[adapter.getItemCount()];
@@ -117,7 +103,7 @@ public class OnboardingActivity extends AppCompatActivity {
         for (int i = 0; i < childCount; i++) {
             TextView indicator = (TextView) layoutIndicators.getChildAt(i);
             if (i == index) {
-                indicator.setTextColor(getColor(R.color.black)); // Use a color from your colors.xml
+                indicator.setTextColor(getColor(R.color.black));
             } else {
                 indicator.setTextColor(getColor(android.R.color.darker_gray));
             }
@@ -125,12 +111,6 @@ public class OnboardingActivity extends AppCompatActivity {
     }
 
     private void goToLogin() {
-        // 🔹 [REMOVED] Saving the "done" state is no longer needed if you always want to show onboarding.
-        /*
-        SharedPreferences prefs = getSharedPreferences("onboarding", MODE_PRIVATE);
-        prefs.edit().putBoolean("done", true).apply();
-        */
-
         startActivity(new Intent(OnboardingActivity.this, LoginActivity.class));
         finish();
     }

@@ -28,10 +28,10 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
     @Override
     public void onBindViewHolder(@NonNull HistoryViewHolder holder, int position) {
         Booking booking = bookingList.get(position);
-        holder.bookingIdTextView.setText(booking.getBookingId());
-        holder.carModelTextView.setText(booking.getCarModel());
-        holder.dateTextView.setText(booking.getDate());
-        holder.priceTextView.setText(booking.getPrice());
+        holder.vehicleNameTextView.setText("Vehicle: " + booking.getVehicleName());
+        holder.dateTextView.setText("Date: " + booking.getDate());
+        holder.timeTextView.setText("Time: " + booking.getTime());
+        holder.priceTextView.setText(booking.getCurrency() + booking.getPrice());
     }
 
     @Override
@@ -39,18 +39,23 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         return bookingList.size();
     }
 
+    public void setBookings(List<Booking> bookings) {
+        this.bookingList = bookings;
+        notifyDataSetChanged();
+    }
+
     public static class HistoryViewHolder extends RecyclerView.ViewHolder {
 
-        TextView bookingIdTextView;
-        TextView carModelTextView;
+        TextView vehicleNameTextView;
         TextView dateTextView;
+        TextView timeTextView;
         TextView priceTextView;
 
         public HistoryViewHolder(@NonNull View itemView) {
             super(itemView);
-            bookingIdTextView = itemView.findViewById(R.id.booking_id_text_view);
-            carModelTextView = itemView.findViewById(R.id.car_model_text_view);
+            vehicleNameTextView = itemView.findViewById(R.id.vehicle_name_text_view);
             dateTextView = itemView.findViewById(R.id.date_text_view);
+            timeTextView = itemView.findViewById(R.id.time_text_view);
             priceTextView = itemView.findViewById(R.id.price_text_view);
         }
     }
