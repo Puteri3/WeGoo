@@ -191,6 +191,7 @@
             </androidx.cardview.widget.CardView>
 
             <!-- Action Buttons -->
+            <!-- Action Buttons -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -206,6 +207,19 @@
                     android:backgroundTint="#0A58CA"
                     android:elevation="4dp"
                     android:text="Add Vehicle"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white" />
+
+                <Button
+                    android:id="@+id/btnEditVehicle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="#FFA500"
+                    android:elevation="4dp"
+                    android:text="Edit Vehicle"
                     android:textAllCaps="false"
                     android:textColor="@android:color/white" />
 

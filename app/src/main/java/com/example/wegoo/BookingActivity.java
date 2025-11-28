@@ -91,8 +91,13 @@ public class BookingActivity extends AppCompatActivity {
                     String selectedDate = String.format(Locale.getDefault(), "%d-%02d-%02d", year1, monthOfYear + 1, dayOfMonth);
                     etBookingDate.setText(selectedDate);
                 }, year, month, day);
+
+        // ✅ Set minimum date ke hari ini supaya user tak boleh pilih tarikh lepas
+        datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
+
         datePickerDialog.show();
     }
+
 
     private void showTimePickerDialog() {
         final Calendar c = Calendar.getInstance();

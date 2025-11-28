@@ -16,35 +16,36 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="460dp"
         android:layout_below="@id/toolbar"
-        android:layout_marginTop="83dp"
+        android:layout_marginTop="34dp"
         android:orientation="vertical"
         android:outlineAmbientShadowColor="#00BCD4"
         android:outlineSpotShadowColor="#6A6767"
         android:padding="16dp">
 
         <ImageView
-            android:layout_width="255dp"
-            android:layout_height="150dp"
+            android:layout_width="344dp"
+            android:layout_height="224dp"
             android:layout_gravity="center_horizontal"
             android:src="@drawable/msn" />
 
+
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="112dp"
+            android:layout_height="42dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
             android:text="WeGoo"
+            android:textAlignment="gravity"
             android:textColor="@android:color/black"
             android:textSize="24sp"
             android:textStyle="bold" />
 
-
         <Button
             android:id="@+id/tvWhatsApp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="247dp"
+            android:layout_height="52dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
             android:backgroundTint="@color/neon_blue"

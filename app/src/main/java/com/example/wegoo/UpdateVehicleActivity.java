@@ -21,9 +21,12 @@ import com.bumptech.glide.Glide;
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class UpdateVehicleActivity extends AppCompatActivity {
@@ -32,11 +35,13 @@ public class UpdateVehicleActivity extends AppCompatActivity {
 
     private FirebaseFirestore firestore;
 
-    private EditText etVehicleName, etVehicleType, etVehiclePrice, etFuelType, etEngineCapacity, etSeatingCapacity, etColor, etTransmission;
+    private EditText etVehicleName, etVehicleType, etVehiclePrice, etFuelType, etEngineCapacity,
+            etSeatingCapacity, etColor, etTransmission;
     private ImageView imgPreview;
     private Uri selectedImageUri;
     private String vehicleId;
     private Vehicle currentVehicle;
+    private String currentProviderId;
 
     private final ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
@@ -58,6 +63,7 @@ public class UpdateVehicleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_update_vehicle);
 
         firestore = FirebaseFirestore.getInstance();
+        currentProviderId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         etVehicleName = findViewById(R.id.etVehicleName);
         etVehicleType = findViewById(R.id.etVehicleType);
@@ -68,14 +74,25 @@ public class UpdateVehicleActivity extends AppCompatActivity {
         etColor = findViewById(R.id.etColor);
         etTransmission = findViewById(R.id.etTransmission);
         imgPreview = findViewById(R.id.imgPreview);
-        Button btnAddVehicle = findViewById(R.id.btnAddVehicle);
+        Button btnSaveVehicle = findViewById(R.id.btnAddVehicle);
         Button btnUploadPicture = findViewById(R.id.btnUploadPicture);
 
         btnUploadPicture.setOnClickListener(v -> checkPermissionAndOpenPicker());
-        btnAddVehicle.setOnClickListener(v -> saveVehicle());
 
         vehicleId = getIntent().getStringExtra("vehicleId");
-        if (vehicleId != null) loadVehicleData();
+
+        if (vehicleId != null && !vehicleId.isEmpty()) {
+            // EDIT MODE
+            setTitle("Edit Vehicle");
+            loadVehicleData();
+            btnSaveVehicle.setText("Save Changes");
+        } else {
+            // ADD MODE
+            setTitle("Add New Vehicle");
+            btnSaveVehicle.setText("Add Vehicle");
+        }
+
+        btnSaveVehicle.setOnClickListener(v -> saveVehicle());
     }
 
     private void checkPermissionAndOpenPicker() {
@@ -101,15 +118,19 @@ public class UpdateVehicleActivity extends AppCompatActivity {
                         if (currentVehicle != null) {
                             etVehicleName.setText(currentVehicle.getVehicleName());
                             etVehicleType.setText(currentVehicle.getVehicleType());
-                            etVehiclePrice.setText(currentVehicle.getVehiclePrice());
+                            etVehiclePrice.setText(String.valueOf(currentVehicle.getVehiclePrice()));
                             etFuelType.setText(currentVehicle.getFuelType());
                             etEngineCapacity.setText(currentVehicle.getEngineCapacity());
                             etSeatingCapacity.setText(currentVehicle.getSeatingCapacity());
                             etColor.setText(currentVehicle.getColor());
                             etTransmission.setText(currentVehicle.getTransmission());
-                            String uriStr = currentVehicle.getImageUrl();
-                            if (uriStr != null && !uriStr.isEmpty())
-                                Glide.with(this).load(uriStr).into(imgPreview);
+
+                            List<String> imageUrls = currentVehicle.getImageUrls();
+                            if (imageUrls != null && !imageUrls.isEmpty()) {
+                                Glide.with(this).load(imageUrls.get(0)).into(imgPreview); // Load the first image
+                            } else if (currentVehicle.getImageUrl() != null) {
+                                Glide.with(this).load(currentVehicle.getImageUrl()).into(imgPreview);
+                            }
                         }
                     }
                 })
@@ -117,115 +138,98 @@ public class UpdateVehicleActivity extends AppCompatActivity {
     }
 
     private void saveVehicle() {
-        Log.d(TAG, "saveVehicle: Attempting to save vehicle.");
         String name = etVehicleName.getText().toString().trim();
         String type = etVehicleType.getText().toString().trim();
         String priceText = etVehiclePrice.getText().toString().trim();
-
-        // Collect other fields
         String fuelType = etFuelType.getText().toString().trim();
         String engineCapacity = etEngineCapacity.getText().toString().trim();
         String seatingCapacity = etSeatingCapacity.getText().toString().trim();
         String color = etColor.getText().toString().trim();
         String transmission = etTransmission.getText().toString().trim();
 
-
         if (name.isEmpty() || type.isEmpty() || priceText.isEmpty()) {
-            Toast.makeText(this, "Fill all fields!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Fill all required fields!", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Case 1: A NEW image was selected
         if (selectedImageUri != null) {
-            Log.d(TAG, "saveVehicle: New image selected. Starting upload process.");
             uploadToCloudinaryAndSaveVehicle(name, type, priceText, fuelType, engineCapacity, seatingCapacity, color, transmission);
-        }
-        // Case 2: NO new image was selected, but we are updating an existing vehicle
-        else if (vehicleId != null && currentVehicle != null && currentVehicle.getImageUrl() != null) {
-            Log.d(TAG, "saveVehicle: No new image. Updating with existing image URL.");
-            saveDataToFirestore(name, type, priceText, currentVehicle.getImageUrl(), fuelType, engineCapacity, seatingCapacity, color, transmission);
-        }
-        // Case 3: No image selected AND it's a NEW vehicle
-        else {
-            Log.d(TAG, "saveVehicle: No image selected for a new vehicle.");
-            Toast.makeText(this, "Please select an image!", Toast.LENGTH_SHORT).show();
+        } else if (vehicleId != null) {
+            // If editing and no new image, save other data changes
+            saveDataToFirestore(name, type, priceText, null, fuelType, engineCapacity, seatingCapacity, color, transmission);
+        } else {
+            Toast.makeText(this, "Please select an image for a new vehicle!", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void uploadToCloudinaryAndSaveVehicle(String name, String type, String priceText, String fuelType, String engineCapacity, String seatingCapacity, String color, String transmission) {
-        if (selectedImageUri != null) {
-            Toast.makeText(this, "Uploading image to Cloudinary...", Toast.LENGTH_LONG).show();
-            Log.d(TAG, "uploadToCloudinary: Uploading URI: " + selectedImageUri.toString());
+    private void uploadToCloudinaryAndSaveVehicle(String name, String type, String priceText, String fuelType, String engineCapacity,
+                                                  String seatingCapacity, String color, String transmission) {
+        Toast.makeText(this, "Uploading image...", Toast.LENGTH_LONG).show();
 
-            MediaManager.get().upload(selectedImageUri).callback(new UploadCallback() {
-                @Override
-                public void onStart(String requestId) {
-                    Log.d(TAG, "Cloudinary upload started.");
-                }
+        MediaManager.get().upload(selectedImageUri).callback(new UploadCallback() {
+            @Override
+            public void onSuccess(String requestId, Map resultData) {
+                String imageUrl = (String) resultData.get("secure_url");
+                saveDataToFirestore(name, type, priceText, imageUrl, fuelType, engineCapacity, seatingCapacity, color, transmission);
+            }
 
-                @Override
-                public void onProgress(String requestId, long bytes, long totalBytes) {
-                    // You can add progress bar logic here if needed
-                }
-
-                @Override
-                public void onSuccess(String requestId, Map resultData) {
-                    Log.d(TAG, "Cloudinary upload successful.");
-                    String imageUrl = (String) resultData.get("secure_url");
-                    if (imageUrl != null) {
-                        Toast.makeText(UpdateVehicleActivity.this, "Image uploaded successfully!", Toast.LENGTH_SHORT).show();
-                        saveDataToFirestore(name, type, priceText, imageUrl, fuelType, engineCapacity, seatingCapacity, color, transmission);
-                    } else {
-                        Log.e(TAG, "Cloudinary upload error: URL is null.");
-                        Toast.makeText(UpdateVehicleActivity.this, "Upload failed: Could not get image URL.", Toast.LENGTH_LONG).show();
-                    }
-                }
-
-                @Override
-                public void onError(String requestId, ErrorInfo error) {
-                    Log.e(TAG, "Cloudinary upload failed: " + error.getDescription());
-                    Toast.makeText(UpdateVehicleActivity.this, "Upload failed: " + error.getDescription(), Toast.LENGTH_LONG).show();
-                }
-
-                @Override
-                public void onReschedule(String requestId, ErrorInfo error) {
-                    Log.w(TAG, "Cloudinary upload rescheduled: " + error.getDescription());
-                }
-            }).dispatch();
-        }
+            @Override
+            public void onError(String requestId, ErrorInfo error) {
+                Toast.makeText(UpdateVehicleActivity.this, "Upload failed: " + error.getDescription(), Toast.LENGTH_LONG).show();
+            }
+            @Override public void onStart(String requestId) { }
+            @Override public void onProgress(String requestId, long bytes, long totalBytes) { }
+            @Override public void onReschedule(String requestId, ErrorInfo error) { }
+        }).dispatch();
     }
 
-    private void saveDataToFirestore(String name, String type, String price, String imageUrl, String fuelType, String engineCapacity, String seatingCapacity, String color, String transmission) {
-        Log.d(TAG, "saveDataToFirestore: Saving data to Firestore. Image URL: " + imageUrl);
+    private void saveDataToFirestore(String name, String type, String price, String newImageUrl, String fuelType,
+                                     String engineCapacity, String seatingCapacity, String color, String transmission) {
+
         Map<String, Object> data = new HashMap<>();
         data.put("vehicleName", name);
         data.put("vehicleType", type);
         data.put("vehiclePrice", price);
-        data.put("imageUrl", imageUrl);
         data.put("fuelType", fuelType);
         data.put("engineCapacity", engineCapacity);
         data.put("seatingCapacity", seatingCapacity);
         data.put("color", color);
         data.put("transmission", transmission);
+        data.put("providerId", currentProviderId);
+        data.put("timestamp", System.currentTimeMillis());
 
+        // --- Correctly Handle Image URLs ---
+        List<String> imageUrls = new ArrayList<>();
+        if (currentVehicle != null && currentVehicle.getImageUrls() != null) {
+            imageUrls.addAll(currentVehicle.getImageUrls()); // Start with existing images
+        }
+        if (newImageUrl != null && !newImageUrl.isEmpty() && !imageUrls.contains(newImageUrl)) {
+            imageUrls.add(newImageUrl); // Add the new one
+        }
+        data.put("imageUrls", imageUrls);
+
+        // For backward compatibility, also update the old single imageUrl field
+        if (!imageUrls.isEmpty()) {
+            data.put("imageUrl", imageUrls.get(imageUrls.size() - 1));
+        } else {
+            data.put("imageUrl", null);
+        }
+
+        // --- Firestore Save/Update ---
         if (vehicleId != null) {
-            // Update Existing Vehicle
-            firestore.collection("vehicles").document(vehicleId)
-                    .update(data)
+            firestore.collection("vehicles").document(vehicleId).update(data)
                     .addOnSuccessListener(aVoid -> {
                         Toast.makeText(this, "Vehicle Updated!", Toast.LENGTH_SHORT).show();
                         finish();
                     })
-                    .addOnFailureListener(e -> Log.e(TAG, "saveDataToFirestore: Update failed", e));
+                    .addOnFailureListener(e -> Log.e(TAG, "Update failed", e));
         } else {
-            // Add New Vehicle
-            firestore.collection("vehicles")
-                    .add(data)
+            firestore.collection("vehicles").add(data)
                     .addOnSuccessListener(docRef -> {
                         Toast.makeText(this, "Vehicle Added!", Toast.LENGTH_SHORT).show();
                         finish();
                     })
-                    .addOnFailureListener(e -> Log.e(TAG, "saveDataToFirestore: Add failed", e));
+                    .addOnFailureListener(e -> Log.e(TAG, "Add failed", e));
         }
     }
 }

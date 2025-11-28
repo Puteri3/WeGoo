@@ -8,13 +8,18 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/menu_history"
+        android:title="History"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/menu_about"
-        android:title="About Us"
+        android:title="Contact Us"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/menu_contact"
-        android:title="Contact Us"
+        android:title="About Us"
         app:showAsAction="never" />
 
     <item

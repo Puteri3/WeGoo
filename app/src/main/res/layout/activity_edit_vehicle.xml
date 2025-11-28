@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Vehicle Image -->
+        <ImageView
+            android:id="@+id/imgPreview"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginBottom="8dp"
+            android:scaleType="centerCrop"
+            android:background="#E0E0E0" />
+
+        <!-- Upload Image Button -->
+        <Button
+            android:id="@+id/btnUploadPicture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Upload Picture"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Vehicle Name -->
+        <EditText
+            android:id="@+id/etVehicleName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Vehicle Name"
+            android:layout_marginBottom="8dp"
+            android:inputType="text" />
+
+        <!-- Vehicle Type -->
+        <EditText
+            android:id="@+id/etVehicleType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Vehicle Type"
+            android:layout_marginBottom="8dp"
+            android:inputType="text" />
+
+        <!-- Vehicle Price -->
+        <EditText
+            android:id="@+id/etVehiclePrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Vehicle Price"
+            android:layout_marginBottom="8dp"
+            android:inputType="numberDecimal" />
+
+        <!-- Fuel Type -->
+        <EditText
+            android:id="@+id/etFuelType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Fuel Type"
+            android:layout_marginBottom="8dp"
+            android:inputType="text" />
+
+        <!-- Engine Capacity -->
+        <EditText
+            android:id="@+id/etEngineCapacity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Engine Capacity"
+            android:layout_marginBottom="8dp"
+            android:inputType="text" />
+
+        <!-- Seating Capacity -->
+        <EditText
+            android:id="@+id/etSeatingCapacity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Seating Capacity"
+            android:layout_marginBottom="8dp"
+            android:inputType="number" />
+
+        <!-- Color -->
+        <EditText
+            android:id="@+id/etColor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Color"
+            android:layout_marginBottom="8dp"
+            android:inputType="text" />
+
+        <!-- Transmission -->
+        <EditText
+            android:id="@+id/etTransmission"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Transmission"
+            android:layout_marginBottom="16dp"
+            android:inputType="text" />
+
+        <!-- Save Button -->
+        <Button
+            android:id="@+id/btnAddVehicle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save Changes"
+            android:backgroundTint="#1976D2"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
+</ScrollView>

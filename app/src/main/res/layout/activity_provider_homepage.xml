@@ -1,30 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EAF3FF">
+    android:background="?attr/colorSurface"
+    tools:context=".ProviderHomepageActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+    <!-- AppBar with Neon Blue -->
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        app:title="Provider Dashboard"
-        app:titleTextColor="@android:color/white" />
+        android:layout_height="wrap_content"
+        android:background="@color/neon_blue">
 
-    <ScrollView
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="Provider Dashboard"
+            app:titleTextColor="@android:color/white"
+            style="@style/Widget.Material3.Toolbar">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/logoImage"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/welcome1"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="16dp"
+                android:contentDescription="Logo" />
+
+        </com.google.android.material.appbar.MaterialToolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Scrollable Content -->
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar"
-        android:padding="24dp">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="24dp">
 
             <!-- Logo -->
             <ImageView
@@ -43,91 +65,97 @@
                 android:layout_marginBottom="24dp"
                 android:gravity="center"
                 android:text="Provider Dashboard"
-                android:textColor="#0A58CA"
-                android:textSize="22sp"
-                android:textStyle="bold" />
+                android:textAppearance="?attr/textAppearanceHeadline5"
+                android:textColor="@color/neon_blue"
+                android:textColorLink="@color/neon_blue" />
 
             <!-- Profile Card -->
-            <LinearLayout
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
-                android:background="@drawable/bg_card"
-                android:elevation="4dp"
-                android:orientation="vertical"
-                android:padding="16dp">
+                app:cardElevation="4dp">
 
-                <TextView
-                    android:id="@+id/tvProviderName"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Provider Name: John Doe"
-                    android:textColor="#1E1E1E"
-                    android:textSize="16sp" />
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
-                <TextView
-                    android:id="@+id/tvProviderEmail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="Email: johndoe@example.com"
-                    android:textColor="#555"
-                    android:textSize="14sp" />
+                    <TextView
+                        android:id="@+id/tvProviderName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Provider Name: SHAHROL"
+                        android:textAppearance="?attr/textAppearanceSubtitle1"
+                        android:textColor="?attr/colorOnSurface" />
 
-                <Button
-                    android:id="@+id/btnProfileSettings"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="10dp"
-                    android:backgroundTint="@android:color/holo_blue_dark"
-                    android:paddingLeft="24dp"
-                    android:paddingRight="24dp"
-                    android:text="Profile Settings"
-                    android:textColor="#FFFFFF" />
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/tvProviderEmail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Email: msngrouplegacy@com.my"
+                        android:textAppearance="?attr/textAppearanceBody2"
+                        android:textColor="?attr/colorOnSurfaceVariant" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnProfileSettings"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="10dp"
+                        android:backgroundTint="@color/neon_blue"
+                        android:text="Profile Settings" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
             <!-- Dashboard Buttons -->
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnUpdate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                android:backgroundTint="@android:color/holo_blue_dark"
                 android:padding="12dp"
-                android:text="Update / Manage Vehicle"
-                android:textColor="#FFFFFF" />
+                android:backgroundTint="@color/neon_blue"
+                android:text="Update / Manage Vehicle" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnViewVehicle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:padding="12dp"
+                android:backgroundTint="@color/neon_blue"
+                android:text="View Vehicle" />
+
+
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnHistory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                android:backgroundTint="@android:color/holo_blue_dark"
                 android:padding="12dp"
-                android:text="View History"
-                android:textColor="#FFFFFF" />
+                android:backgroundTint="@color/neon_blue"
+                android:text="View History" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnCustomers"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                android:backgroundTint="@android:color/holo_blue_dark"
                 android:padding="12dp"
-                android:text="List of Customers"
-                android:textColor="#FFFFFF"
-                tools:ignore="MissingPrefix" />
+                android:backgroundTint="@color/neon_blue"
+                android:text="List of Customers" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnOpenCV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@android:color/holo_blue_dark"
                 android:padding="12dp"
-                android:text="OpenCV Damage Detection"
-                android:textColor="#FFFFFF" />
+                android:backgroundTint="@color/neon_blue"
+                android:text="OpenCV Damage Detection" />
 
         </LinearLayout>
-    </ScrollView>
-</RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

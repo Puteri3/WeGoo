@@ -18,7 +18,7 @@
         android:layout_marginStart="16dp">
 
         <TextView
-            android:id="@+id/textVehicleName"
+            android:id="@+id/tvVehicleName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Vehicle Name"
@@ -26,22 +26,16 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/textVehicleType"
+            android:id="@+id/tvBookingDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Vehicle Type" />
+            android:text="Booking Date" />
 
         <TextView
-            android:id="@+id/textVehiclePrice"
+            android:id="@+id/tvBookingPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Price" />
-
-        <TextView
-            android:id="@+id/textDeletedDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Deleted on" />
 
     </LinearLayout>
 

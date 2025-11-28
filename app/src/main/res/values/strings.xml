@@ -2,4 +2,14 @@
     <string name="app_name">WeGoo</string>
     <string name="booking_page_title">📅 Booking Page</string>
     <string name="log_in">LOG IN</string>
+    <string name="vehicle_image_desc">Vehicle Image</string>
+    <string name="vehicle_name_hint">Vehicle Name</string>
+    <string name="vehicle_type_hint">Vehicle Type</string>
+    <string name="price_hint">Price</string>
+    <string name="fuel_type_hint">Fuel Type</string>
+    <string name="engine_capacity_hint">Engine Capacity</string>
+    <string name="seating_capacity_hint">Seating Capacity</string>
+    <string name="color_hint">Color</string>
+    <string name="transmission_hint">Transmission</string>
+    <string name="close_button">Close</string>
 </resources>

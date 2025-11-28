@@ -79,6 +79,7 @@
         <activity android:name=".CustomerListActivity" android:exported="false" android:configChanges="orientation|screenSize"/>
         <activity android:name=".ProviderProfileSettingsActivity" android:exported="false" android:configChanges="orientation|screenSize"/>
         <activity android:name=".ProviderVehicleListActivity" android:exported="false" android:configChanges="orientation|screenSize"/>
+		<activity android:name=".ProviderHistoryActivity" android:exported="false" android:configChanges="orientation|screenSize"/>
 
         <!-- ✅ Vehicle-related -->
         <activity
@@ -86,6 +87,17 @@
             android:exported="false"
             android:label="Update Vehicle"
             android:configChanges="orientation|screenSize"/>
+
+        <!-- ===================== Vehicle-related Activities ===================== -->
+
+
+
+       <!-- <activity
+            android:name=".DeleteVehicleActivity"
+            android:exported="false"
+            android:label="Delete Vehicle"
+            android:configChanges="orientation|screenSize"/>-->
+
 
         <activity
             android:name=".HistoryActivity"

@@ -19,6 +19,7 @@ import java.util.List;
 public class CustomerListActivity extends AppCompatActivity {
 
     private static final String TAG = "CustomerListActivity";
+
     private RecyclerView rvCustomerList;
     private CustomerAdapter customerAdapter;
     private List<Customer> customerList;
@@ -33,7 +34,7 @@ public class CustomerListActivity extends AppCompatActivity {
         rvCustomerList.setLayoutManager(new LinearLayoutManager(this));
 
         customerList = new ArrayList<>();
-        customerAdapter = new CustomerAdapter(this, customerList);
+        customerAdapter = new CustomerAdapter(customerList);
         rvCustomerList.setAdapter(customerAdapter);
 
         db = FirebaseFirestore.getInstance();
@@ -59,9 +60,12 @@ public class CustomerListActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         for (DocumentSnapshot userDoc : task.getResult()) {
                             Customer customer = userDoc.toObject(Customer.class);
-                            String userName = customer.getName(); // ambil name dari Users
 
-                            // Fetch latest booking
+                            if (customer == null) continue;
+
+                            String userName = customer.getUserName(); // Guna userName, bukan name
+
+                            // Fetch booking terbaru berdasarkan userName
                             db.collection("bookings")
                                     .whereEqualTo("userName", userName)
                                     .orderBy("timestamp", com.google.firebase.firestore.Query.Direction.DESCENDING)
@@ -73,13 +77,10 @@ public class CustomerListActivity extends AppCompatActivity {
                                             customer.setVehicleName(bookingDoc.getString("vehicleName"));
                                             customer.setVehiclePrice(bookingDoc.getDouble("vehiclePrice"));
                                             customer.setVehicleType(bookingDoc.getString("vehicleType"));
-                                            customer.setBookingDate(bookingDoc.getString("bookingDate"));
-                                            customer.setBookingTime(bookingDoc.getString("bookingTime"));
-                                            customer.setPickupLocation(bookingDoc.getString("pickupLocation"));
-                                            customer.setUserPhone(bookingDoc.getString("userPhone"));
-                                            customer.setImageUrl(bookingDoc.getString("imageUrl"));
                                         } else {
                                             customer.setVehicleName("No booking");
+                                            customer.setVehiclePrice(0.0);
+                                            customer.setVehicleType("-");
                                         }
 
                                         customerList.add(customer);
@@ -88,7 +89,7 @@ public class CustomerListActivity extends AppCompatActivity {
                         }
                     } else {
                         Log.w(TAG, "Error getting documents.", task.getException());
-                        Toast.makeText(this, "Error fetching customers.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CustomerListActivity.this, "Error fetching customers.", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

@@ -15,7 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class ProviderHomepageActivity extends AppCompatActivity {
 
-    Button btnHistory, btnCustomers, btnOpenCV, btnProfileSettings, btnUpdate;
+    Button btnHistory, btnCustomers, btnOpenCV, btnProfileSettings, btnUpdate, btnViewVehicle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +31,11 @@ public class ProviderHomepageActivity extends AppCompatActivity {
         btnCustomers = findViewById(R.id.btnCustomers);
         btnOpenCV = findViewById(R.id.btnOpenCV);
         btnProfileSettings = findViewById(R.id.btnProfileSettings);
+        btnViewVehicle = findViewById(R.id.btnViewVehicle);
 
         // Navigate to History Page
         btnHistory.setOnClickListener(v -> {
-            Intent intent = new Intent(ProviderHomepageActivity.this, HistoryActivity.class);
+            Intent intent = new Intent(ProviderHomepageActivity.this, ProviderHistoryActivity.class);
             startActivity(intent);
         });
 
@@ -59,6 +60,12 @@ public class ProviderHomepageActivity extends AppCompatActivity {
         // Navigate to Update/Manage Vehicle Page
         btnUpdate.setOnClickListener(v -> {
             Intent intent = new Intent(ProviderHomepageActivity.this, UpdateVehicleActivity.class);
+            startActivity(intent);
+        });
+
+        // Navigate to View Vehicle Page
+        btnViewVehicle.setOnClickListener(v -> {
+            Intent intent = new Intent(ProviderHomepageActivity.this, ProviderVehicleListActivity.class);
             startActivity(intent);
         });
     }

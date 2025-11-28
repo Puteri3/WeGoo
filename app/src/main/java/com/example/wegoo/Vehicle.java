@@ -1,12 +1,15 @@
 package com.example.wegoo;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.PropertyName;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Vehicle {
+public class Vehicle implements Parcelable {
     private String id;
     private String vehicleName;
     private String vehicleType;
@@ -18,6 +21,10 @@ public class Vehicle {
     private String color;
     private String transmission;
     private boolean isBooked;
+    private String providerId;
+    private long timestamp;
+    private String edition;
+    private double rating;
 
 
     @Exclude
@@ -27,7 +34,7 @@ public class Vehicle {
     public Vehicle() {
     }
 
-    public Vehicle(String vehicleId, String vehicleName, String vehicleType, String vehiclePrice, String fuelType, String engineCapacity, String seatingCapacity, String color, ArrayList<String> imageUrls, String transmission) {
+    public Vehicle(String vehicleId, String vehicleName, String vehicleType, String vehiclePrice, String fuelType, String engineCapacity, String seatingCapacity, String color, ArrayList<String> imageUrls, String transmission, String providerId, long timestamp, String edition) {
         this.id = vehicleId;
         this.vehicleName = vehicleName;
         this.vehicleType = vehicleType;
@@ -38,6 +45,65 @@ public class Vehicle {
         this.color = color;
         this.imageUrls = imageUrls;
         this.transmission = transmission;
+        this.providerId = providerId;
+        this.timestamp = timestamp;
+        this.edition = edition;
+    }
+
+    protected Vehicle(Parcel in) {
+        id = in.readString();
+        vehicleName = in.readString();
+        vehicleType = in.readString();
+        vehiclePrice = in.readString();
+        imageUrls = in.createStringArrayList();
+        fuelType = in.readString();
+        engineCapacity = in.readString();
+        seatingCapacity = in.readString();
+        color = in.readString();
+        transmission = in.readString();
+        isBooked = in.readByte() != 0;
+        providerId = in.readString();
+        timestamp = in.readLong();
+        edition = in.readString();
+        rating = in.readDouble();
+        selected = in.readByte() != 0;
+    }
+
+    public static final Creator<Vehicle> CREATOR = new Creator<Vehicle>() {
+        @Override
+        public Vehicle createFromParcel(Parcel in) {
+            return new Vehicle(in);
+        }
+
+        @Override
+        public Vehicle[] newArray(int size) {
+            return new Vehicle[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(vehicleName);
+        dest.writeString(vehicleType);
+        dest.writeString(vehiclePrice);
+        dest.writeStringList(imageUrls);
+        dest.writeString(fuelType);
+        dest.writeString(engineCapacity);
+        dest.writeString(seatingCapacity);
+        dest.writeString(color);
+        dest.writeString(transmission);
+        dest.writeByte((byte) (isBooked ? 1 : 0));
+        dest.writeString(providerId);
+        dest.writeLong(timestamp);
+        dest.writeString(edition);
+        dest.writeDouble(rating);
+        dest.writeByte((byte) (selected ? 1 : 0));
     }
 
     public String getId() {
@@ -46,6 +112,10 @@ public class Vehicle {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public void setVehicleId(String vehicleId) {
+        this.id = vehicleId;
     }
 
     public String getVehicleName() {
@@ -146,6 +216,22 @@ public class Vehicle {
         isBooked = booked;
     }
 
+    public String getProviderId() {
+        return providerId;
+    }
+
+    public void setProviderId(String providerId) {
+        this.providerId = providerId;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
+
     @Exclude
     public boolean isSelected() {
         return selected;
@@ -154,5 +240,25 @@ public class Vehicle {
     @Exclude
     public void setSelected(boolean selected) {
         this.selected = selected;
+    }
+
+    public String getEdition() {
+        return edition;
+    }
+
+    public void setEdition(String edition) {
+        this.edition = edition;
+    }
+
+    public String getVehicleId() {
+        return id;
+    }
+
+    public String getPrice() {
+        return vehiclePrice;
+    }
+
+    public double getRating() {
+        return rating;
     }
 }

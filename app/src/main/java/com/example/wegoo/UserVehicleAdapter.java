@@ -18,11 +18,10 @@ public class UserVehicleAdapter extends RecyclerView.Adapter<UserVehicleAdapter.
 
     private List<Vehicle> vehicleList;
     private OnItemClickListener listener;
-    private List<Vehicle> selectedVehicles = new ArrayList<>();
 
     public interface OnItemClickListener {
-        void onBookNowClick(int position);
-        void onCheckboxClick(int position, boolean isChecked);
+        void onBookNowClick(Vehicle vehicle);
+        void onCheckboxClick(Vehicle vehicle, boolean isChecked);
     }
 
     public UserVehicleAdapter(List<Vehicle> vehicleList, OnItemClickListener listener) {
@@ -47,37 +46,45 @@ public class UserVehicleAdapter extends RecyclerView.Adapter<UserVehicleAdapter.
         holder.tvVehicleType.setText(vehicle.getVehicleType());
         holder.tvVehiclePrice.setText("RM " + vehicle.getVehiclePrice());
 
-        // Multiple Images Slider
-        String imageUrl = vehicle.getImageUrl();
-        if (imageUrl != null && !imageUrl.isEmpty()) {
-            List<String> imageUrls = new ArrayList<>();
-            imageUrls.add(imageUrl);
+        // --- Multiple Images Slider (with Fallback) ---
+        List<String> imageUrls = vehicle.getImageUrls();
 
+        // Fallback for old data: if the new list is empty/null, check the old single imageUrl field
+        if (imageUrls == null || imageUrls.isEmpty()) {
+            String singleImageUrl = vehicle.getImageUrl();
+            if (singleImageUrl != null && !singleImageUrl.isEmpty()) {
+                imageUrls = new ArrayList<>();
+                imageUrls.add(singleImageUrl);
+            }
+        }
+
+        // Now, if we have any URLs (either from the new list or the fallback), set up the adapter
+        if (imageUrls != null && !imageUrls.isEmpty()) {
             ImageSliderAdapter adapter = new ImageSliderAdapter(
                     holder.itemView.getContext(),
                     imageUrls
             );
-
             holder.viewPager.setAdapter(adapter);
+        } else {
+            // Optional: Clear the adapter if there are no images to prevent showing recycled images
+            holder.viewPager.setAdapter(null);
         }
 
-        // Compare Checkbox
+        // --- CLICK LISTENERS ---
+
+        // Handle Book Now click
+        holder.btnBookNow.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onBookNowClick(vehicle);
+            }
+        });
+
+        // Handle Checkbox click
         holder.checkboxCompare.setOnCheckedChangeListener(null);
         holder.checkboxCompare.setChecked(vehicle.isSelected());
-
         holder.checkboxCompare.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            vehicle.setSelected(isChecked);
-
-            if (isChecked) {
-                if (!selectedVehicles.contains(vehicle)) {
-                    selectedVehicles.add(vehicle);
-                }
-            } else {
-                selectedVehicles.remove(vehicle);
-            }
-
             if (listener != null) {
-                listener.onCheckboxClick(position, isChecked);
+                listener.onCheckboxClick(vehicle, isChecked);
             }
         });
     }
@@ -85,10 +92,6 @@ public class UserVehicleAdapter extends RecyclerView.Adapter<UserVehicleAdapter.
     @Override
     public int getItemCount() {
         return vehicleList.size();
-    }
-
-    public List<Vehicle> getSelectedVehicles() {
-        return selectedVehicles;
     }
 
     public void filterList(List<Vehicle> filteredList) {
@@ -107,23 +110,11 @@ public class UserVehicleAdapter extends RecyclerView.Adapter<UserVehicleAdapter.
             super(itemView);
 
             viewPager = itemView.findViewById(R.id.viewPager);
-
             tvVehicleName = itemView.findViewById(R.id.tvVehicleName);
             tvVehicleType = itemView.findViewById(R.id.tvVehicleType);
             tvVehiclePrice = itemView.findViewById(R.id.tvVehiclePrice);
-
             btnBookNow = itemView.findViewById(R.id.btnBookNow);
             checkboxCompare = itemView.findViewById(R.id.checkCompare);
-
-            // Book Now Listener
-            btnBookNow.setOnClickListener(v -> {
-                if (listener != null) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-                        listener.onBookNowClick(position);
-                    }
-                }
-            });
         }
     }
 }

@@ -48,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // TODO: Add role-based redirection if needed
                             Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                            startActivity(new Intent(LoginActivity.this, UserHomepageActivity.class));
                             finish();
                         } else {
                             Toast.makeText(LoginActivity.this, "Authentication failed.",

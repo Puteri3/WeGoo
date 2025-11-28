@@ -1,6 +1,6 @@
 /*
  * This file is auto-generated.  DO NOT MODIFY.
- * Using: C:\\Users\\user\\AppData\\Local\\Android\\Sdk\\build-tools\\36.0.0\\aidl.exe -pC:\\Users\\user\\AppData\\Local\\Android\\Sdk\\platforms\\android-34\\framework.aidl -oC:\\Users\\user\\AndroidStudioProjects\\WeGoo\\opencv\\build\\generated\\aidl_source_output_dir\\debug\\out -IC:\\Users\\user\\AndroidStudioProjects\\WeGoo\\opencv\\java\\src -IC:\\Users\\user\\AndroidStudioProjects\\WeGoo\\opencv\\src\\debug\\aidl -dC:\\Users\\user\\AppData\\Local\\Temp\\aidl3142937689119714381.d C:\\Users\\user\\AndroidStudioProjects\\WeGoo\\opencv\\java\\src\\org\\opencv\\engine\\OpenCVEngineInterface.aidl
+ * Using: C:\\Users\\user\\AppData\\Local\\Android\\Sdk\\build-tools\\36.0.0\\aidl.exe -pC:\\Users\\user\\AppData\\Local\\Android\\Sdk\\platforms\\android-34\\framework.aidl -oC:\\Users\\user\\AndroidStudioProjects\\WeGoo\\opencv\\build\\generated\\aidl_source_output_dir\\debug\\out -IC:\\Users\\user\\AndroidStudioProjects\\WeGoo\\opencv\\java\\src -IC:\\Users\\user\\AndroidStudioProjects\\WeGoo\\opencv\\src\\debug\\aidl -dC:\\Users\\user\\AppData\\Local\\Temp\\aidl12119073279082352915.d C:\\Users\\user\\AndroidStudioProjects\\WeGoo\\opencv\\java\\src\\org\\opencv\\engine\\OpenCVEngineInterface.aidl
  *
  * DO NOT CHECK THIS FILE INTO A CODE TREE (e.g. git, etc..).
  * ALWAYS GENERATE THIS FILE FROM UPDATED AIDL COMPILER

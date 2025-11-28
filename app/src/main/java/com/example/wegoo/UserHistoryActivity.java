@@ -22,6 +22,7 @@ public class UserHistoryActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private HistoryAdapter adapter;
+    private List<Booking> bookingList;
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
 
@@ -33,7 +34,8 @@ public class UserHistoryActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.history_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new HistoryAdapter(new ArrayList<>());
+        bookingList = new ArrayList<>();
+        adapter = new HistoryAdapter(this, bookingList);
         recyclerView.setAdapter(adapter);
 
         db = FirebaseFirestore.getInstance();
@@ -51,12 +53,12 @@ public class UserHistoryActivity extends AppCompatActivity {
                     .get()
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            List<Booking> bookings = new ArrayList<>();
+                            bookingList.clear();
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Booking booking = document.toObject(Booking.class);
-                                bookings.add(booking);
+                                bookingList.add(booking);
                             }
-                            adapter.setBookings(bookings);
+                            adapter.notifyDataSetChanged();
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
                         }

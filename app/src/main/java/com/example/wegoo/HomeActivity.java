@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -17,6 +16,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -28,6 +30,7 @@ import java.util.List;
 public class HomeActivity extends AppCompatActivity implements VehicleAdapter.OnVehicleClickListener {
 
     private FirebaseFirestore firestore;
+    private FirebaseAuth mAuth;
     private RecyclerView recyclerView;
     private VehicleAdapter adapter;
     private List<Vehicle> vehicleList;
@@ -43,6 +46,7 @@ public class HomeActivity extends AppCompatActivity implements VehicleAdapter.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_homepage);
 
+        // --- Toolbar ---
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -50,30 +54,33 @@ public class HomeActivity extends AppCompatActivity implements VehicleAdapter.On
         }
 
         firestore = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
+        // --- RecyclerView setup ---
         recyclerView = findViewById(R.id.recyclerVehicles);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        vehicleList = new ArrayList<>();
 
+        vehicleList = new ArrayList<>();
         adapter = new VehicleAdapter(this, vehicleList, this);
         recyclerView.setAdapter(adapter);
 
+        // --- Search bar ---
         searchBar = findViewById(R.id.searchBar);
         searchBar.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void afterTextChanged(Editable s) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                filterVehicles(s.toString());
+                filterVehicles(s.toString().trim());
             }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
         });
 
-        // Add scroll listener for pagination
+        // --- Pagination scroll listener ---
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
@@ -86,6 +93,7 @@ public class HomeActivity extends AppCompatActivity implements VehicleAdapter.On
             }
         });
 
+        // --- Bottom Navigation ---
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);
         bottomNav.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
@@ -93,7 +101,7 @@ public class HomeActivity extends AppCompatActivity implements VehicleAdapter.On
                 startActivity(new Intent(this, BookingActivity.class));
                 return true;
             } else if (id == R.id.nav_history) {
-                startActivity(new Intent(this, UserHistoryActivity.class));
+                navigateToHistory();
                 return true;
             } else if (id == R.id.nav_profile) {
                 startActivity(new Intent(this, UserProfileActivity.class));
@@ -102,72 +110,61 @@ public class HomeActivity extends AppCompatActivity implements VehicleAdapter.On
             return false;
         });
 
+        // --- Load vehicles initially ---
         loadVehicles();
     }
 
-    // --- VehicleAdapter.OnVehicleClickListener Implementation ---
-    @Override
-    public void onVehicleClick(Vehicle vehicle) {
-        onBookNowClick(vehicle);
-    }
-
-    @Override
-    public void onBookNowClick(Vehicle vehicle) {
-        if (vehicle.getId() == null) {
-            Toast.makeText(this, "Error: Vehicle ID is missing for booking.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        Intent intent = new Intent(HomeActivity.this, BookingActivity.class);
-        intent.putExtra("vehicleId", vehicle.getId());
-        intent.putExtra("vehicleName", vehicle.getVehicleName());
-        intent.putExtra("vehicleType", vehicle.getVehicleType());
-        intent.putExtra("vehiclePrice", vehicle.getVehiclePrice());
-        if (vehicle.getImageUrl() != null && !vehicle.getImageUrl().isEmpty()) {
-             String firstImageUrl = vehicle.getImageUrl();
-             intent.putExtra("imageUrl", firstImageUrl);
-             Log.d("Problem", "Image URL: " + firstImageUrl);
-        }
-        startActivity(intent);
-    }
-
-    @Override
-    public void onAddToCompareClick(Vehicle vehicle, boolean isChecked) {
-        if (isChecked) {
-            if (!selectedForCompareList.contains(vehicle)) {
-                selectedForCompareList.add(vehicle);
-                Toast.makeText(this, vehicle.getVehicleName() + " added to comparison.", Toast.LENGTH_SHORT).show();
-            }
+    private void navigateToHistory() {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            String uid = currentUser.getUid();
+            DocumentReference userRef = firestore.collection("users").document(uid);
+            userRef.get().addOnSuccessListener(documentSnapshot -> {
+                if (isFinishing() || isDestroyed()) {
+                    return;
+                }
+                if (documentSnapshot.exists()) {
+                    String role = documentSnapshot.getString("role");
+                    if ("provider".equals(role)) {
+                        startActivity(new Intent(HomeActivity.this, ProviderHistoryActivity.class));
+                    } else {
+                        startActivity(new Intent(HomeActivity.this, UserHistoryActivity.class));
+                    }
+                } else {
+                    startActivity(new Intent(HomeActivity.this, UserHistoryActivity.class));
+                }
+            }).addOnFailureListener(e -> {
+                if (!isFinishing() && !isDestroyed()) {
+                    startActivity(new Intent(HomeActivity.this, UserHistoryActivity.class));
+                }
+            });
         } else {
-            selectedForCompareList.remove(vehicle);
-            Toast.makeText(this, vehicle.getVehicleName() + " removed from comparison.", Toast.LENGTH_SHORT).show();
+             if (!isFinishing() && !isDestroyed()) {
+                startActivity(new Intent(HomeActivity.this, UserHistoryActivity.class));
+            }
         }
     }
 
-    // --- Modified Helper Methods for Pagination ---
-
+    // --- Load initial vehicles ---
     private void loadVehicles() {
         isLoading = true;
         Query firstQuery = firestore.collection("vehicles").limit(10);
 
         firstQuery.get().addOnSuccessListener(querySnapshot -> {
+            if (isFinishing() || isDestroyed()) {
+                return;
+            }
             if (!querySnapshot.isEmpty()) {
                 for (QueryDocumentSnapshot doc : querySnapshot) {
-                    try {
-                        Vehicle v = doc.toObject(Vehicle.class);
-                        v.setId(doc.getId());
-                        vehicleList.add(v);
-                    } catch (Exception e) {
-                        Log.e("HomeActivity", "Error converting document: " + e.getMessage());
-                    }
+                    Vehicle v = doc.toObject(Vehicle.class);
+                    v.setVehicleId(doc.getId());
+                    vehicleList.add(v);
                 }
                 adapter.notifyDataSetChanged();
                 lastVisible = querySnapshot.getDocuments().get(querySnapshot.size() - 1);
             }
             isLoading = false;
-        }).addOnFailureListener(e -> {
-            Log.e("HomeActivity", "Failed to load vehicles", e);
-            isLoading = false;
-        });
+        }).addOnFailureListener(e -> isLoading = false);
     }
 
     private void loadMoreVehicles() {
@@ -177,16 +174,15 @@ public class HomeActivity extends AppCompatActivity implements VehicleAdapter.On
                 .limit(10);
 
         nextQuery.get().addOnSuccessListener(querySnapshot -> {
+            if (isFinishing() || isDestroyed()) {
+                return;
+            }
             if (!querySnapshot.isEmpty()) {
                 int startPosition = vehicleList.size();
                 for (QueryDocumentSnapshot doc : querySnapshot) {
-                    try {
-                        Vehicle v = doc.toObject(Vehicle.class);
-                        v.setId(doc.getId());
-                        vehicleList.add(v);
-                    } catch (Exception e) {
-                        Log.e("HomeActivity", "Error converting document: " + e.getMessage());
-                    }
+                    Vehicle v = doc.toObject(Vehicle.class);
+                    v.setVehicleId(doc.getId());
+                    vehicleList.add(v);
                 }
                 adapter.notifyItemRangeInserted(startPosition, querySnapshot.size());
                 lastVisible = querySnapshot.getDocuments().get(querySnapshot.size() - 1);
@@ -194,32 +190,26 @@ public class HomeActivity extends AppCompatActivity implements VehicleAdapter.On
                 lastVisible = null;
             }
             isLoading = false;
-        }).addOnFailureListener(e -> {
-            Log.e("HomeActivity", "Failed to load more vehicles", e);
-            isLoading = false;
-        });
+        }).addOnFailureListener(e -> isLoading = false);
     }
 
+    // --- Filter vehicles by search query (name OR type) ---
     private void filterVehicles(String text) {
-        // Note: This now only filters the currently loaded vehicles.
-        // For a full database search, this implementation would need to change.
         List<Vehicle> filteredList = new ArrayList<>();
         if (text.isEmpty()) {
-            // If search is cleared, ideally we should re-load the paginated list.
-            // For now, we'll just show what we have.
-             filteredList.addAll(vehicleList);
+            filteredList.addAll(vehicleList);
         } else {
             for (Vehicle vehicle : vehicleList) {
-                if (vehicle.getVehicleType() != null &&
-                        vehicle.getVehicleType().toLowerCase().contains(text.toLowerCase())) {
+                if ((vehicle.getVehicleType() != null && vehicle.getVehicleType().toLowerCase().contains(text.toLowerCase())) ||
+                        (vehicle.getVehicleName() != null && vehicle.getVehicleName().toLowerCase().contains(text.toLowerCase()))) {
                     filteredList.add(vehicle);
                 }
             }
         }
         adapter.updateList(filteredList);
     }
-    
-    // --- Unchanged Options Menu Methods ---
+
+    // --- Toolbar menu ---
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.top_toolbar_menu, menu);
@@ -230,21 +220,19 @@ public class HomeActivity extends AppCompatActivity implements VehicleAdapter.On
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.menu_compare) {
-            if (selectedForCompareList.size() > 1) {
-                Intent intent = new Intent(this, CompareTableActivity.class);
-                intent.putExtra("selectedVehicles", selectedForCompareList);
-                startActivity(intent);
-            } else {
-                Toast.makeText(this, "Please select at least two vehicles to compare.", Toast.LENGTH_SHORT).show();
-            }
+            startActivity(new Intent(this, CompareTableActivity.class));
             return true;
         } else if (id == R.id.menu_about) {
             startActivity(new Intent(this, AboutUsActivity.class));
             return true;
         } else if (id == R.id.menu_contact) {
-            startActivity(new Intent(this, ContactProviderActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onVehicleClick(Vehicle vehicle) {
+        // TODO: Implement this method
     }
 }

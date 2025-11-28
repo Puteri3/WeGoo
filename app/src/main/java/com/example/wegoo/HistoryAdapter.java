@@ -1,5 +1,6 @@
 package com.example.wegoo;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,26 +13,27 @@ import java.util.List;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder> {
 
+    private Context context;
     private List<Booking> bookingList;
 
-    public HistoryAdapter(List<Booking> bookingList) {
+    public HistoryAdapter(Context context, List<Booking> bookingList) {
+        this.context = context;
         this.bookingList = bookingList;
     }
 
     @NonNull
     @Override
     public HistoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.history_list_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_history, parent, false);
         return new HistoryViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull HistoryViewHolder holder, int position) {
         Booking booking = bookingList.get(position);
-        holder.vehicleNameTextView.setText("Vehicle: " + booking.getVehicleName());
-        holder.dateTextView.setText("Date: " + booking.getDate());
-        holder.timeTextView.setText("Time: " + booking.getTime());
-        holder.priceTextView.setText(booking.getCurrency() + booking.getPrice());
+        holder.tvVehicleName.setText(booking.getVehicleName());
+        holder.tvBookingDate.setText(booking.getDate());
+        holder.tvBookingPrice.setText(String.valueOf(booking.getPrice()));
     }
 
     @Override
@@ -39,24 +41,15 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         return bookingList.size();
     }
 
-    public void setBookings(List<Booking> bookings) {
-        this.bookingList = bookings;
-        notifyDataSetChanged();
-    }
+    class HistoryViewHolder extends RecyclerView.ViewHolder {
 
-    public static class HistoryViewHolder extends RecyclerView.ViewHolder {
-
-        TextView vehicleNameTextView;
-        TextView dateTextView;
-        TextView timeTextView;
-        TextView priceTextView;
+        TextView tvVehicleName, tvBookingDate, tvBookingPrice;
 
         public HistoryViewHolder(@NonNull View itemView) {
             super(itemView);
-            vehicleNameTextView = itemView.findViewById(R.id.vehicle_name_text_view);
-            dateTextView = itemView.findViewById(R.id.date_text_view);
-            timeTextView = itemView.findViewById(R.id.time_text_view);
-            priceTextView = itemView.findViewById(R.id.price_text_view);
+            tvVehicleName = itemView.findViewById(R.id.tvVehicleName);
+            tvBookingDate = itemView.findViewById(R.id.tvBookingDate);
+            tvBookingPrice = itemView.findViewById(R.id.tvBookingPrice);
         }
     }
 }

@@ -11,40 +11,61 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/neon_blue"
-            app:title="WeGoo Vehicles"
-            app:titleTextColor="@android:color/white"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/neon_blue"
+        app:title="WeGoo Vehicles"
+        app:titleTextColor="@android:color/white"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <!-- ImageView logo di kanan -->
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/logoImage"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/welcome1"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="16dp"
+            android:contentDescription="Logo" />
+    </com.google.android.material.appbar.MaterialToolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
     <!-- 📜 Content -->
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <!-- 🔍 Search Bar -->
-        <EditText
-            android:id="@+id/searchBar"
+        <!-- 🔍 Search Bar + Button -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:background="@drawable/search_box_background"
-            android:drawableStart="@android:drawable/ic_menu_search"
-            android:drawablePadding="12dp"
-            android:hint="Search car type..."
-            android:padding="12dp"
-            android:imeOptions="actionDone"
-            android:inputType="text" />
+            android:orientation="horizontal"
+            android:layout_margin="16dp">
+
+            <EditText
+                android:id="@+id/searchBar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/search_box_background"
+                android:drawableStart="@android:drawable/ic_menu_search"
+                android:drawablePadding="12dp"
+                android:hint="Search car type..."
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:padding="12dp" />
+
+
+        </LinearLayout>
+
 
         <!-- 🚗 Vehicle List -->
-
-        <!-- ⚓ Bottom Navigation -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerVehicles"
             android:layout_width="match_parent"
@@ -52,6 +73,7 @@
             android:layout_weight="1"
             android:padding="8dp" />
 
+        <!-- ⚓ Bottom Navigation -->
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigationView"
             android:layout_width="match_parent"
@@ -61,28 +83,5 @@
             app:itemTextColor="@color/black"
             app:menu="@menu/user_bottom_nav_menu" />
     </LinearLayout>
-
-    <!-- 🔘 Floating Buttons -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_compare"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_compare"
-        android:visibility="gone"
-        app:backgroundTint="@android:color/holo_blue_bright"
-        app:tint="@android:color/white" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_history"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="80dp"
-        android:src="@android:drawable/ic_menu_recent_history"
-        app:backgroundTint="@android:color/holo_blue_bright"
-        app:tint="@android:color/white" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

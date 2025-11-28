@@ -1,5 +1,6 @@
 package com.example.wegoo;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -26,16 +29,19 @@ public class VehicleListActivity extends AppCompatActivity implements VehicleAda
     private List<Vehicle> vehicleList;
     private ProgressBar progressBar;
     private FirebaseFirestore db;
+    private String currentUserId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vehicle_list);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("My Vehicles");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("My Vehicles");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         recyclerView = findViewById(R.id.vehiclesRecyclerView);
         progressBar = findViewById(R.id.progressBar);
@@ -47,7 +53,17 @@ public class VehicleListActivity extends AppCompatActivity implements VehicleAda
         recyclerView.setAdapter(vehicleAdapter);
 
         db = FirebaseFirestore.getInstance();
-        loadVehicles();
+
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            currentUserId = currentUser.getUid();
+            loadVehicles();
+        } else {
+            // Not logged in, so can't show "My Vehicles"
+            Toast.makeText(this, "You need to be logged in to view your vehicles.", Toast.LENGTH_LONG).show();
+            finish(); // Close activity
+            return; // Stop execution
+        }
 
         fabAddVehicle.setOnClickListener(v -> {
             startActivity(new Intent(VehicleListActivity.this, ProviderHomepageActivity.class));
@@ -56,7 +72,9 @@ public class VehicleListActivity extends AppCompatActivity implements VehicleAda
 
     private void loadVehicles() {
         progressBar.setVisibility(View.VISIBLE);
+        // Filter vehicles by the current provider's ID
         db.collection("vehicles")
+                .whereEqualTo("providerId", currentUserId)
                 .get()
                 .addOnCompleteListener(task -> {
                     progressBar.setVisibility(View.GONE);
@@ -64,7 +82,7 @@ public class VehicleListActivity extends AppCompatActivity implements VehicleAda
                         vehicleList.clear();
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             Vehicle vehicle = document.toObject(Vehicle.class);
-                            vehicle.setId(document.getId());
+                            vehicle.setVehicleId(document.getId());
                             vehicleList.add(vehicle);
                         }
                         vehicleAdapter.notifyDataSetChanged();
@@ -77,24 +95,14 @@ public class VehicleListActivity extends AppCompatActivity implements VehicleAda
     @Override
     protected void onResume() {
         super.onResume();
-        loadVehicles();
+        // Reload vehicles only if a user is logged in
+        if (currentUserId != null) {
+            loadVehicles();
+        }
     }
 
     @Override
     public void onVehicleClick(Vehicle vehicle) {
-        Intent intent = new Intent(this, UpdateVehicleActivity.class);
-        intent.putExtra("vehicleId", vehicle.getId());
-        startActivity(intent);
-    }
-
-    @Override
-    public void onAddToCompareClick(Vehicle vehicle, boolean isChecked) {
-        // Not applicable for this screen, so this is intentionally left empty.
-        Toast.makeText(this, "Compare feature not available here.", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onBookNowClick(Vehicle vehicle) {
-        // Not applicable for this screen, so this is intentionally left empty.
+        // TODO: Implement this method
     }
 }

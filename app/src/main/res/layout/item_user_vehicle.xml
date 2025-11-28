@@ -59,8 +59,8 @@
             android:id="@+id/checkCompare"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Compare"
-            android:textColor="#000000"/>
+            android:text="Compare" />
+
     </LinearLayout>
 
 </LinearLayout>

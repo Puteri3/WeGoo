@@ -20,7 +20,7 @@ public class AboutUsActivity extends AppCompatActivity {
 
         tvWhatsApp = findViewById(R.id.tvWhatsApp);
 
-        tvWhatsApp.setOnClickListener(v -> openWhatsApp("+60174325760"));
+        tvWhatsApp.setOnClickListener(v -> openWhatsApp("+017-5595609"));
     }
 
     private void openWhatsApp(String phoneNumber) {

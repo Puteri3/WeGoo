@@ -1,43 +1,35 @@
 package com.example.wegoo;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
-
-import java.util.ArrayList;
+import com.bumptech.glide.Glide;
+import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.List;
 
 public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.VehicleViewHolder> {
 
     private Context context;
     private List<Vehicle> vehicleList;
-    private OnVehicleClickListener listener;
+    private OnVehicleClickListener onVehicleClickListener;
 
-    // Listener interface
-    public interface OnVehicleClickListener {
-        void onVehicleClick(Vehicle vehicle);
-        void onBookNowClick(Vehicle vehicle);
-        void onAddToCompareClick(Vehicle vehicle, boolean isChecked);
-    }
-
-    public VehicleAdapter(Context context, List<Vehicle> vehicleList, OnVehicleClickListener listener) {
+    public VehicleAdapter(Context context, List<Vehicle> vehicleList, OnVehicleClickListener onVehicleClickListener) {
         this.context = context;
         this.vehicleList = vehicleList;
-        this.listener = listener;
+        this.onVehicleClickListener = onVehicleClickListener;
     }
 
     @NonNull
     @Override
     public VehicleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_user_vehicle, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.vehicle_list_item, parent, false);
         return new VehicleViewHolder(view);
     }
 
@@ -45,45 +37,32 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.VehicleV
     public void onBindViewHolder(@NonNull VehicleViewHolder holder, int position) {
         Vehicle vehicle = vehicleList.get(position);
 
-        // Set text fields
-        holder.tvVehicleName.setText(vehicle.getVehicleName());
-        holder.tvVehicleType.setText(vehicle.getVehicleType());
-        holder.tvVehiclePrice.setText(vehicle.getVehiclePrice());
+        holder.vehicleNameTextView.setText(vehicle.getVehicleName());
+        holder.vehiclePriceTextView.setText(String.format("RM %.2f / day", vehicle.getVehiclePrice()));
 
-        // Horizontal image list inside each vehicle
         if (vehicle.getImageUrl() != null && !vehicle.getImageUrl().isEmpty()) {
-            List<String> imageUrls = new ArrayList<>();
-            imageUrls.add(vehicle.getImageUrl());
-
-            ImageSliderAdapter adapter = new ImageSliderAdapter(
-                    holder.itemView.getContext(),
-                    imageUrls
-            );
-
-            holder.viewPager.setAdapter(adapter);
+            Glide.with(context).load(vehicle.getImageUrl()).into(holder.vehicleImageView);
         }
 
-        // Full item click
+        holder.btnView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, ViewVehicleActivity.class);
+            intent.putExtra("vehicleId", vehicle.getVehicleId());
+            context.startActivity(intent);
+        });
+
+        holder.btnEdit.setOnClickListener(v -> {
+            Intent intent = new Intent(context, UpdateVehicleActivity.class);
+            intent.putExtra("vehicleId", vehicle.getVehicleId());
+            context.startActivity(intent);
+        });
+
+        holder.btnDelete.setOnClickListener(v -> {
+            FirebaseFirestore.getInstance().collection("vehicles").document(vehicle.getVehicleId()).delete();
+        });
+
         holder.itemView.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onVehicleClick(vehicle);
-            }
-        });
-
-        // Book Now
-        holder.btnBookNow.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onBookNowClick(vehicle);
-            }
-        });
-
-        // Add to Compare
-        holder.checkCompare.setOnCheckedChangeListener(null);
-        holder.checkCompare.setChecked(vehicle.isSelected());
-        holder.checkCompare.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            vehicle.setSelected(isChecked);
-            if (listener != null) {
-                listener.onAddToCompareClick(vehicle, isChecked);
+            if(onVehicleClickListener != null) {
+                onVehicleClickListener.onVehicleClick(vehicle);
             }
         });
     }
@@ -94,28 +73,28 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.VehicleV
     }
 
     public void updateList(List<Vehicle> newList) {
-        this.vehicleList = newList;
+        vehicleList = newList;
         notifyDataSetChanged();
     }
 
-    class VehicleViewHolder extends RecyclerView.ViewHolder {
-
-        TextView tvVehicleName, tvVehicleType, tvVehiclePrice;
-        Button btnBookNow;
-        CheckBox checkCompare;
-        ViewPager2 viewPager;
+    public static class VehicleViewHolder extends RecyclerView.ViewHolder {
+        ImageView vehicleImageView;
+        TextView vehicleNameTextView;
+        TextView vehiclePriceTextView;
+        Button btnView, btnEdit, btnDelete;
 
         public VehicleViewHolder(@NonNull View itemView) {
             super(itemView);
-
-            tvVehicleName = itemView.findViewById(R.id.tvVehicleName);
-            tvVehicleType = itemView.findViewById(R.id.tvVehicleType);
-            tvVehiclePrice = itemView.findViewById(R.id.tvVehiclePrice);
-
-            btnBookNow = itemView.findViewById(R.id.btnBookNow);
-            checkCompare = itemView.findViewById(R.id.checkCompare);
-
-            viewPager = itemView.findViewById(R.id.viewPager);
+            vehicleImageView = itemView.findViewById(R.id.vehicleImageView);
+            vehicleNameTextView = itemView.findViewById(R.id.vehicleNameTextView);
+            vehiclePriceTextView = itemView.findViewById(R.id.vehiclePriceTextView);
+            btnView = itemView.findViewById(R.id.btnView);
+            btnEdit = itemView.findViewById(R.id.btnEdit);
+            btnDelete = itemView.findViewById(R.id.btnDelete);
         }
+    }
+
+    public interface OnVehicleClickListener {
+        void onVehicleClick(Vehicle vehicle);
     }
 }

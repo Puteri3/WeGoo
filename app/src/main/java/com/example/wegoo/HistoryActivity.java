@@ -1,6 +1,7 @@
 package com.example.wegoo;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,25 +19,22 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HistoryActivity extends AppCompatActivity {
+public abstract class HistoryActivity extends AppCompatActivity implements UserVehicleAdapter.OnItemClickListener {
 
-    private RecyclerView rvHistoryList;
-    private VehicleHistoryAdapter adapter;
-    private List<Vehicle> vehicleList;
+    private UserVehicleAdapter adapter;
+    private final List<Vehicle> vehicleList = new ArrayList<>();
     private DatabaseReference vehiclesRef;
     private String currentProviderId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_history);
+        setContentView(R.layout.activity_user_history);
 
-        rvHistoryList = findViewById(R.id.rvHistoryList);
-        rvHistoryList.setHasFixedSize(true);
+        RecyclerView rvHistoryList = findViewById(R.id.history_recycler_view);
         rvHistoryList.setLayoutManager(new LinearLayoutManager(this));
 
-        vehicleList = new ArrayList<>();
-        adapter = new VehicleHistoryAdapter(vehicleList);
+        adapter = new UserVehicleAdapter(vehicleList, this);
         rvHistoryList.setAdapter(adapter);
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -54,19 +52,31 @@ public class HistoryActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         vehicleList.clear();
-                        for (DataSnapshot vehicleSnapshot : snapshot.getChildren()) {
-                            Vehicle vehicle = vehicleSnapshot.getValue(Vehicle.class);
+
+                        for (DataSnapshot vehicleSnap : snapshot.getChildren()) {
+                            Vehicle vehicle = vehicleSnap.getValue(Vehicle.class);
                             if (vehicle != null) {
                                 vehicleList.add(vehicle);
                             }
                         }
+
                         adapter.notifyDataSetChanged();
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-                        // Handle error
+                        Toast.makeText(HistoryActivity.this, "Failed to load vehicles", Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    @Override
+    public void onBookNowClick(Vehicle vehicle) {
+        Toast.makeText(this, "Book Now: " + vehicle.getVehicleName(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onCheckboxClick(Vehicle vehicle, boolean isChecked) {
+        Toast.makeText(this, vehicle.getVehicleName() + " checked: " + isChecked, Toast.LENGTH_SHORT).show();
     }
 }
