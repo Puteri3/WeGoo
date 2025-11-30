@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/card_clean_white"
+    android:padding="14dp"
+    android:elevation="8dp">
+
+    <!-- Vehicle Image (Wider & Taller) -->
+    <ImageView
+        android:id="@+id/imgVehicle"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:background="#08000000"
+        android:src="@mipmap/ic_launcher" />
+
+    <!-- Vehicle Name -->
+    <TextView
+        android:id="@+id/tvVehicleName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Vehicle Name"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:paddingTop="12dp"
+        android:paddingBottom="8dp"
+        android:textColor="#000000" />
+
+    <!-- Buttons Row (Bigger Buttons) -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:gravity="center"
+        android:weightSum="3">
+
+        <Button
+            android:id="@+id/btnView"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="View"
+            android:textAllCaps="false"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:backgroundTint="@color/neon_blue"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/btnUpdate"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:text="Edit"
+            android:textAllCaps="false"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:backgroundTint="@color/neon_blue"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/btnDelete"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:text="Delete"
+            android:textAllCaps="false"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:backgroundTint="@color/neon_blue"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
+
+</LinearLayout>

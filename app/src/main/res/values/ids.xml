@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="recyclerVehicles" type="id" />
+    <item name="tvWhatsApp" type="id" />
+    <item name="imgPreview" type="id" />
+    <item name="btnUploadPicture" type="id" />
+    <item name="etVehicleId" type="id" />
+    <item name="dotsIndicator" type="id" />
+</resources>
