@@ -42,6 +42,10 @@ public class Booking {
         return date;
     }
 
+    public String getBookingDate() {
+        return date;
+    }
+
     public String getTime() {
         return time;
     }
@@ -55,6 +59,10 @@ public class Booking {
         } catch (NumberFormatException e) {
             return 0.0;
         }
+    }
+
+    public Double getTotalPrice() {
+        return getPrice();
     }
 
     public String getCurrency() {

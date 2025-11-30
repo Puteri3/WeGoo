@@ -35,7 +35,7 @@ public class UserHistoryActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         bookingList = new ArrayList<>();
-        adapter = new HistoryAdapter(this, bookingList);
+        adapter = new HistoryAdapter(bookingList);
         recyclerView.setAdapter(adapter);
 
         db = FirebaseFirestore.getInstance();

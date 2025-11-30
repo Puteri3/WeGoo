@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_launcher_background" 
+            android:src="@drawable/ic_launcher_background"
             tools:ignore="ContentDescription" />
 
         <TextView
@@ -42,48 +42,42 @@
             android:layout_marginTop="16dp"
             android:columnCount="2">
 
+            <TextView android:text="Type:" />
             <TextView
-                android:text="Type:" />
-            <TextView
-                android:id="@+id/tvVehicleType" 
+                android:id="@+id/tvVehicleType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp" />
 
-            <TextView
-                android:text="Color:" />
+            <TextView android:text="Color:" />
             <TextView
                 android:id="@+id/tvVehicleColor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp" />
 
-            <TextView
-                android:text="Fuel Type:" />
+            <TextView android:text="Fuel Type:" />
             <TextView
                 android:id="@+id/tvFuelType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp" />
 
-            <TextView
-                android:text="Transmission:" />
+            <TextView android:text="Transmission:" />
             <TextView
                 android:id="@+id/tvTransmission"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp" />
 
-            <TextView
-                android:text="Engine (cc):" />
+            <TextView android:text="Engine (cc):" />
             <TextView
                 android:id="@+id/tvEngineCapacity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp" />
 
-            <TextView
-                android:text="Seats:" />
+            <TextView android:text="Seats:" />
             <TextView
                 android:id="@+id/tvSeatingCapacity"
                 android:layout_width="wrap_content"
@@ -103,7 +97,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Edit" />
+                android:text="Edit"
+                android:backgroundTint="@color/neon_blue"
+                android:textColor="@android:color/white" />
 
             <Button
                 android:id="@+id/btnDeleteVehicle"
@@ -111,7 +107,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_weight="1"
-                android:text="Delete" />
+                android:text="Delete"
+                android:backgroundTint="@color/neon_blue"
+                android:textColor="@android:color/white" />
 
         </LinearLayout>
 

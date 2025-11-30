@@ -18,7 +18,8 @@
         android:background="@color/neon_blue"
         app:title="WeGoo Vehicles"
         app:titleTextColor="@android:color/white"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:menu="@menu/top_toolbar_menu">
 
         <!-- ImageView logo di kanan -->
         <de.hdodenhof.circleimageview.CircleImageView
@@ -40,7 +41,28 @@
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <!-- 🔍 Search Bar -->
+        <!-- User Profile Info -->
+        <TextView
+            android:id="@+id/tvWelcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Welcome"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:padding="8dp"
+            android:textColor="#000000"/>
+
+        <TextView
+            android:id="@+id/tvEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="email"
+            android:textSize="14sp"
+            android:paddingStart="8dp"
+            android:textColor="#555555"/>
+
+
+
         <!-- 🔍 Search Bar + Button -->
         <LinearLayout
             android:layout_width="match_parent"

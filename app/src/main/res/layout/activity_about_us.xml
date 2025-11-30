@@ -12,7 +12,7 @@
         android:background="@color/neon_blue"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:title="About Us" />
+        app:title="Contact Us" />
 
     <LinearLayout
         android:layout_width="match_parent"

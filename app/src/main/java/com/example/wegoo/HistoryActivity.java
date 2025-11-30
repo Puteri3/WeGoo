@@ -10,21 +10,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class HistoryActivity extends AppCompatActivity implements UserVehicleAdapter.OnItemClickListener {
+public class HistoryActivity extends AppCompatActivity {
 
-    private UserVehicleAdapter adapter;
-    private final List<Vehicle> vehicleList = new ArrayList<>();
-    private DatabaseReference vehiclesRef;
-    private String currentProviderId;
+    private HistoryAdapter adapter;
+    private final List<Booking> bookingList = new ArrayList<>();
+    private FirebaseFirestore db;
+    private String currentUserId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,49 +31,37 @@ public abstract class HistoryActivity extends AppCompatActivity implements UserV
         RecyclerView rvHistoryList = findViewById(R.id.history_recycler_view);
         rvHistoryList.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new UserVehicleAdapter(vehicleList, this);
+        adapter = new HistoryAdapter(bookingList);
         rvHistoryList.setAdapter(adapter);
 
+        db = FirebaseFirestore.getInstance();
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
-            currentProviderId = currentUser.getUid();
+            currentUserId = currentUser.getUid();
         }
 
-        vehiclesRef = FirebaseDatabase.getInstance().getReference("vehicles");
-        loadProviderVehicles();
+        loadBookingHistory();
     }
 
-    private void loadProviderVehicles() {
-        vehiclesRef.orderByChild("providerId").equalTo(currentProviderId)
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        vehicleList.clear();
+    private void loadBookingHistory() {
+        if (currentUserId == null) {
+            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-                        for (DataSnapshot vehicleSnap : snapshot.getChildren()) {
-                            Vehicle vehicle = vehicleSnap.getValue(Vehicle.class);
-                            if (vehicle != null) {
-                                vehicleList.add(vehicle);
-                            }
+        db.collection("bookings").whereEqualTo("userId", currentUserId)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        bookingList.clear();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Booking booking = document.toObject(Booking.class);
+                            bookingList.add(booking);
                         }
-
                         adapter.notifyDataSetChanged();
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(HistoryActivity.this, "Failed to load vehicles", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(HistoryActivity.this, "Failed to load booking history.", Toast.LENGTH_SHORT).show();
                     }
                 });
-    }
-
-    @Override
-    public void onBookNowClick(Vehicle vehicle) {
-        Toast.makeText(this, "Book Now: " + vehicle.getVehicleName(), Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onCheckboxClick(Vehicle vehicle, boolean isChecked) {
-        Toast.makeText(this, vehicle.getVehicleName() + " checked: " + isChecked, Toast.LENGTH_SHORT).show();
     }
 }

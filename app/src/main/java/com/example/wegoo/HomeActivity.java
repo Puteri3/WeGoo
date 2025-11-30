@@ -7,7 +7,6 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -222,10 +221,15 @@ public class HomeActivity extends AppCompatActivity implements VehicleAdapter.On
         if (id == R.id.menu_compare) {
             startActivity(new Intent(this, CompareTableActivity.class));
             return true;
-        } else if (id == R.id.menu_about) {
+        } else if (id == R.id.menu_contact) {
             startActivity(new Intent(this, AboutUsActivity.class));
             return true;
-        } else if (id == R.id.menu_contact) {
+        } else if (id == R.id.menu_logout) {
+            mAuth.signOut();
+            Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);

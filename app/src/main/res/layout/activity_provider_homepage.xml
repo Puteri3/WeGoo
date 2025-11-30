@@ -39,7 +39,8 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_marginBottom="?attr/actionBarSize">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -51,8 +52,8 @@
             <!-- Logo -->
             <ImageView
                 android:id="@+id/imgLogo"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="105dp"
+                android:layout_height="103dp"
                 android:layout_marginBottom="12dp"
                 android:contentDescription="Provider Logo"
                 android:src="@drawable/provider_logo" />
@@ -66,8 +67,7 @@
                 android:gravity="center"
                 android:text="Provider Dashboard"
                 android:textAppearance="?attr/textAppearanceHeadline5"
-                android:textColor="@color/neon_blue"
-                android:textColorLink="@color/neon_blue" />
+                android:textColor="@color/neon_blue" />
 
             <!-- Profile Card -->
             <com.google.android.material.card.MaterialCardView
@@ -99,63 +99,22 @@
                         android:textAppearance="?attr/textAppearanceBody2"
                         android:textColor="?attr/colorOnSurfaceVariant" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnProfileSettings"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:layout_marginTop="10dp"
-                        android:backgroundTint="@color/neon_blue"
-                        android:text="Profile Settings" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Dashboard Buttons -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnUpdate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:padding="12dp"
-                android:backgroundTint="@color/neon_blue"
-                android:text="Update / Manage Vehicle" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnViewVehicle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:padding="12dp"
-                android:backgroundTint="@color/neon_blue"
-                android:text="View Vehicle" />
-
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnHistory"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:padding="12dp"
-                android:backgroundTint="@color/neon_blue"
-                android:text="View History" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnCustomers"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:padding="12dp"
-                android:backgroundTint="@color/neon_blue"
-                android:text="List of Customers" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnOpenCV"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="12dp"
-                android:backgroundTint="@color/neon_blue"
-                android:text="OpenCV Damage Detection" />
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <!-- Bottom Navigation -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/provider_bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:menu="@menu/provider_bottom_nav_menu"
+        app:itemIconTint="@color/neon_blue"
+        app:itemTextColor="@color/neon_blue"
+        app:labelVisibilityMode="labeled"
+        android:background="?attr/colorSurface" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
