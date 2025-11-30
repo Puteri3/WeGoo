@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="12dp"
+    android:fillViewport="true"
+    android:background="#f5f5f5">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/tvCourseTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="List of Courses"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="@color/blue"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:paddingTop="24dp"
+            android:paddingBottom="16dp"
+            android:letterSpacing="0.01" />
+
+
+        <!-- Mechanical Department -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="#FFCDD2"
+            android:padding="12dp"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:id="@+id/header_mech"
+                android:text="Mechanical Engineering Department ▾"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#B71C1C"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"/>
+
+            <LinearLayout
+                android:id="@+id/content_mech"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="• Diploma in Engineering Technology (Industrial Design)"
+                    android:layout_marginTop="4dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="• Diploma in Engineering Technology (Machine Tools Maintenance)"
+                    android:layout_marginTop="2dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="• Diploma in Precision Tooling Engineering Technology"
+                    android:layout_marginTop="2dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="• Diploma in Industrial Quality Engineering Technology"
+                    android:layout_marginTop="2dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="• Diploma in Innovative Product Design Engineering Technology"
+                    android:layout_marginTop="2dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="• Diploma of Mechanical Engineering Technology (CNC Precision)"
+                    android:layout_marginTop="2dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="• Diploma of Mechanical Engineering Technology (Manufacturing)"
+                    android:layout_marginTop="2dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Electrical Department -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#BBDEFB"
+            android:padding="12dp"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:id="@+id/header_elect"
+                android:text="Electrical &amp; Electronic Engineering Department ▾"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#0D47A1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"/>
+
+            <LinearLayout
+                android:id="@+id/content_elect"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="• Diploma of Mechatronics Engineering Technology"
+                    android:layout_marginTop="4dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="• Diploma of Engineering Technology (Instrumentation &amp; Control)"
+                    android:layout_marginTop="2dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="• Diploma of Electronics Engineering Technology (Computer)"
+                    android:layout_marginTop="2dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="• Autotronics Engineering Technology"
+                    android:layout_marginTop="2dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="• Diploma in Engineering Technology (Sustainable Energy &amp; Power Distribution)"
+                    android:layout_marginTop="2dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Computer Department -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFF9C4"
+            android:padding="12dp"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:id="@+id/header_comp"
+                android:text="Computer &amp; Information Engineering Department ▾"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#F57F17"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"/>
+
+            <LinearLayout
+                android:id="@+id/content_comp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="• Diploma in Software Engineering"
+                    android:layout_marginTop="4dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="• Diploma in Cyber Security Technology"
+                    android:layout_marginTop="2dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="• Diploma in Creative Multimedia"
+                    android:layout_marginTop="2dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Pre-U GUFP -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#C8E6C9"
+            android:padding="12dp"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:id="@+id/header_gufp"
+                android:text="GUFP — GMI-UTP Foundation Programme (Pre-U) ▾"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#1B5E20"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"/>
+
+            <LinearLayout
+                android:id="@+id/content_gufp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="• GMI-UTP Foundation Programme (GUFP)"
+                    android:layout_marginTop="4dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Pre-U GAPP -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#E1BEE7"
+            android:padding="12dp"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:id="@+id/header_gapp"
+                android:text="GAPP — German A Levels Preparatory Programme (Pre-U) ▾"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#4A148C"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"/>
+
+            <LinearLayout
+                android:id="@+id/content_gapp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="• German A Levels Preparatory Programme (GAPP)"
+                    android:layout_marginTop="4dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:padding="16dp"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TextView android:text="About GMI" android:textSize="18sp"/>
+    <TextView android:text="German-Malaysian Institute (GMI) provides technical and vocational education..." android:layout_marginTop="8dp"/>
+
+    <TextView android:text="Contact Us" android:textSize="18sp" android:layout_marginTop="16dp"/>
+    <Button android:id="@+id/btn_call" android:text="Call Admissions" android:layout_marginTop="8dp" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+    <Button android:id="@+id/btn_email" android:text="Email Admissions" android:layout_marginTop="8dp" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+
+</LinearLayout>

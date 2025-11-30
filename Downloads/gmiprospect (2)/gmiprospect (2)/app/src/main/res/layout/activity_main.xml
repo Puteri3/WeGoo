@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f5f5f5"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_marginTop="50dp"
+        android:background="@android:color/white"
+        android:elevation="4dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Logo -->
+        <ImageView
+            android:id="@+id/img_gmi_logo"
+            android:layout_width="284dp"
+            android:layout_height="174dp"
+            android:contentDescription="GMI Logo"
+            android:scaleType="centerCrop"
+            android:src="@drawable/gmi_logo" />
+
+        <!-- Title -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="GMI Prospect Application"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <!-- Buttons -->
+        <Button
+            android:id="@+id/btn_courses"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/blue"
+            android:text="View Courses" />
+
+        <Button
+            android:id="@+id/btn_eligibility"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="@color/blue"
+            android:text="Eligibility Checker" />
+
+        <Button
+            android:id="@+id/btn_enquiry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="@color/blue"
+            android:text="Enquiry (Contact Us and About Us)" />
+
+        <Button
+            android:id="@+id/btn_apply_online"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="@color/blue"
+            android:text="Apply Online" />
+
+    </LinearLayout>
+</ScrollView>

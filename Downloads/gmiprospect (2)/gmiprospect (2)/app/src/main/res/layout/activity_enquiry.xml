@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Layout for Enquiry Activity -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="#f5f5f5">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:background="@android:color/white"
+        android:elevation="4dp"
+        android:layout_margin="8dp">
+
+        <!-- Logo / Image -->
+
+        <!-- About Section -->
+
+        <ImageView
+            android:id="@+id/img_gmi_logo"
+            android:layout_width="248dp"
+            android:layout_height="142dp"
+            android:contentDescription="GMI Logo"
+            android:scaleType="centerCrop"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/gmi_logo" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="About GMI"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="German-Malaysian Institute (GMI) provides technical and vocational education and training for industries. It aims to bridge Germany-Malaysia expertise in engineering, technology, and management."
+            android:layout_marginTop="8dp"
+            android:textSize="14sp"/>
+
+        <!-- Contact Section -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Contact Information"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="German-Malaysian Institute (199201016476)"
+            android:layout_marginTop="8dp"
+            android:textSize="14sp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Jalan Ilmiah, Taman Universiti,\n43000, Kajang, Selangor, Malaysia"
+            android:layout_marginTop="4dp"
+            android:textSize="14sp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tel: +603-8921 9000 / 9191 / 9046 / 9322"
+            android:layout_marginTop="4dp"
+            android:textSize="14sp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Fax: +603-8921 9001"
+            android:layout_marginTop="2dp"
+            android:textSize="14sp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Email: marketing@gmi.edu.my"
+            android:layout_marginTop="2dp"
+            android:textSize="14sp"/>
+
+        <!-- Action Buttons -->
+        <Button
+            android:id="@+id/btn_call"
+            android:text="Call Admissions"
+            android:layout_marginTop="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/blue"/>
+        <Button
+            android:id="@+id/btn_email"
+            android:text="Email Admissions"
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/blue"/>
+        <Button
+            android:id="@+id/btn_map"
+            android:text="View Map to GMI"
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/blue"/>
+        <Button
+            android:id="@+id/btn_feedback"
+            android:text="Enquiry and Feedback"
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/blue"/>
+    </LinearLayout>
+</ScrollView>
